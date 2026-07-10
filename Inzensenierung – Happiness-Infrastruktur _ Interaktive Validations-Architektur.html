@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<!-- saved from url=(0205)file:///run/media/shinehealthcare/a9496acd-4335-4f6b-9ef4-2a6d2c0ce9ad/NTT%20DATA%20CONSTELLATION%20by.%20Daniel%20Pohl/NTT-DATA-%2D-Concept-from-Japan-2-Vatican-2-BI-%2D-Transformation-from-DT./index.html -->
+<html lang="de"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inzensenierung – Happiness-Infrastruktur | Interaktive Validations-Architektur</title>
+<script src="./"></script>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg-2: #121829;
+    --card: #1a2138;
+    --accent: #6c5ce7;
+    --accent-2: #00cec9;
+    --gold: #fdcb6e;
+    --green: #00b894;
+    --red: #e17055;
+    --text: #dfe6e9;
+    --muted: #8395a7;
+    --border: #2d3548;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding-bottom: 4rem;
+  }
+  header {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+  header p { opacity: 0.9; margin-top: 0.5rem; font-size: 0.95rem; }
+  nav {
+    background: var(--bg-2);
+    padding: 0.75rem 1rem;
+    position: sticky;
+    top: 110px;
+    z-index: 99;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
+  }
+  nav a {
+    color: var(--text);
+    text-decoration: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  nav a:hover { background: var(--accent); color: #fff; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+  section { margin-bottom: 4rem; scroll-margin-top: 160px; }
+  section h2 {
+    font-size: 1.5rem;
+    color: var(--accent-2);
+    border-left: 4px solid var(--accent);
+    padding-left: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  section h3 { font-size: 1.1rem; color: var(--gold); margin: 1.5rem 0 0.8rem; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .grid { display: grid; gap: 1rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .module-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .module-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .module-card .num {
+    position: absolute; top: 0.5rem; right: 0.8rem;
+    font-size: 2.5rem; font-weight: 800; opacity: 0.08;
+  }
+  .module-card h4 { color: var(--accent-2); font-size: 1rem; margin-bottom: 0.4rem; }
+  .module-card p { font-size: 0.82rem; color: var(--muted); }
+  .module-card.selected { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
+  .module-card .toggle {
+    position: absolute; bottom: 0.6rem; right: 0.8rem; font-size: 0.65rem;
+    padding: 0.15rem 0.5rem; border-radius: 8px; background: var(--bg); cursor: pointer;
+    border: 1px solid var(--border); color: var(--muted);
+  }
+  .module-card .toggle.on { background: var(--green); color: #fff; border-color: var(--green); }
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none;
+    z-index: 1000; align-items: center; justify-content: center; padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card); border: 1px solid var(--accent); border-radius: 16px;
+    max-width: 600px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 2rem;
+  }
+  .modal h3 { color: var(--gold); margin-bottom: 0.8rem; }
+  .modal .conn-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1rem 0; }
+  .modal .conn-list .pill { cursor: pointer; }
+  .modal .conn-list .pill:hover { background: var(--accent); color: #fff; }
+  .modal .mini-graph { background: var(--bg-2); border-radius: 10px; padding: 1rem; margin-top: 1rem; }
+  .modal-close { float: right; cursor: pointer; color: var(--muted); font-size: 1.4rem; }
+  .live-status { font-size: 0.78rem; padding: 0.3rem 0.7rem; border-radius: 8px; background: var(--bg-2); }
+  .matrix-dim { opacity: 0.25; }
+  .badge {
+    display: inline-block; font-size: 0.68rem; padding: 0.15rem 0.5rem;
+    border-radius: 10px; margin-top: 0.6rem; font-weight: 600;
+  }
+  .badge.ok { background: rgba(0,184,148,0.15); color: var(--green); }
+  .badge.warn { background: rgba(253,203,110,0.15); color: var(--gold); }
+  .badge.active { background: rgba(108,92,231,0.2); color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
+  th, td { padding: 0.7rem 0.8rem; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg-2); color: var(--accent-2); font-weight: 700; position: sticky; top: 0; }
+  tr:hover td { background: rgba(108,92,231,0.05); }
+  .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .filter-bar input, .filter-bar select {
+    background: var(--bg-2); border: 1px solid var(--border); color: var(--text);
+    padding: 0.5rem 0.8rem; border-radius: 8px; font-size: 0.82rem;
+  }
+  .filter-bar input { flex: 1; min-width: 200px; }
+  .paragraph {
+    background: var(--bg-2);
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.8rem;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+  }
+  .paragraph .para-head { font-weight: 700; color: var(--gold); display: flex; justify-content: space-between; }
+  .paragraph .para-body { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; display: none; }
+  .paragraph.open .para-body { display: block; }
+  .scale-wrap { margin: 0.8rem 0; }
+  .scale-label { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 0.3rem; }
+  .scale-bar { height: 10px; background: var(--bg-2); border-radius: 5px; overflow: hidden; }
+  .scale-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+  .mermaid { background: var(--bg-2); border-radius: 12px; padding: 1.5rem; overflow-x: auto; }
+  .mapping-matrix { font-size: 0.78rem; }
+  .mapping-matrix td { text-align: center; }
+  .mapping-matrix .yes { color: var(--green); font-weight: 700; }
+  .mapping-matrix .no { color: var(--red); opacity: 0.5; }
+  .tabs { display: flex; gap: 0.3rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .tab {
+    padding: 0.4rem 1rem; background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 8px; cursor: pointer; font-size: 0.82rem; color: var(--muted);
+  }
+  .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .simulator { background: var(--bg-2); padding: 1.5rem; border-radius: 12px; }
+  .simulator select, .simulator input {
+    width: 100%; padding: 0.6rem; margin: 0.4rem 0; background: var(--card);
+    border: 1px solid var(--border); color: var(--text); border-radius: 8px;
+  }
+  .sim-output { margin-top: 1rem; padding: 1rem; background: var(--card); border-radius: 8px; font-size: 0.85rem; }
+  .lang-note { font-size: 0.75rem; color: var(--muted); font-style: italic; }
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+  .pill { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.7rem; background: rgba(0,206,201,0.15); color: var(--accent-2); margin: 0.2rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>★ Inzensenierung – „Happiness"-Infrastruktur</h1>
+  <p>Konzeptuelle Elevation zur interaktiven Validations-Architektur (PNIA / Schnarchitektur) — Compliance · Jura · Mapping · Skalen</p>
+</header>
+
+<nav>
+  <a href="file:///run/media/shinehealthcare/a9496acd-4335-4f6b-9ef4-2a6d2c0ce9ad/NTT%20DATA%20CONSTELLATION%20by.%20Daniel%20Pohl/NTT-DATA---Concept-from-Japan-2-Vatican-2-BI---Transformation-from-DT./index.html#architektur">Architektur-Graph</a>
+  <a href="file:///run/media/shinehealthcare/a9496acd-4335-4f6b-9ef4-2a6d2c0ce9ad/NTT%20DATA%20CONSTELLATION%20by.%20Daniel%20Pohl/NTT-DATA---Concept-from-Japan-2-Vatican-2-BI---Transformation-from-DT./index.html#module">Interaktive Module</a>
+  <a href="file:///run/media/shinehealthcare/a9496acd-4335-4f6b-9ef4-2a6d2c0ce9ad/NTT%20DATA%20CONSTELLATION%20by.%20Daniel%20Pohl/NTT-DATA---Concept-from-Japan-2-Vatican-2-BI---Transformation-from-DT./index.html#compliance">Compliance-Paragraphen</a>
+  <a href="file:///run/media/shinehealthcare/a9496acd-4335-4f6b-9ef4-2a6d2c0ce9ad/NTT%20DATA%20CONSTELLATION%20by.%20Daniel%20Pohl/NTT-DATA---Concept-from-Japan-2-Vatican-2-BI---Transformation-from-DT./index.html#tabellen">Validations-Tabellen</a>
+  <a href="file:///run/media/shinehealthcare/a9496acd-4335-4f6b-9ef4-2a6d2c0ce9ad/NTT%20DATA%20CONSTELLATION%20by.%20Daniel%20Pohl/NTT-DATA---Concept-from-Japan-2-Vatican-2-BI---Transformation-from-DT./index.html#mapping">Connection-Mapping</a>
+  <a href="file:///run/media/shinehealthcare/a9496acd-4335-4f6b-9ef4-2a6d2c0ce9ad/NTT%20DATA%20CONSTELLATION%20by.%20Daniel%20Pohl/NTT-DATA---Concept-from-Japan-2-Vatican-2-BI---Transformation-from-DT./index.html#skalen">Skalen &amp; Metriken</a>
+  <a href="file:///run/media/shinehealthcare/a9496acd-4335-4f6b-9ef4-2a6d2c0ce9ad/NTT%20DATA%20CONSTELLATION%20by.%20Daniel%20Pohl/NTT-DATA---Concept-from-Japan-2-Vatican-2-BI---Transformation-from-DT./index.html#simulator">Such-Simulator</a>
+  <a href="file:///run/media/shinehealthcare/a9496acd-4335-4f6b-9ef4-2a6d2c0ce9ad/NTT%20DATA%20CONSTELLATION%20by.%20Daniel%20Pohl/NTT-DATA---Concept-from-Japan-2-Vatican-2-BI---Transformation-from-DT./index.html#ebenen">Ebenenkonstellation</a>
+</nav>
+
+<div class="container">
+
+<!-- ========== ARCHITEKTUR ========== -->
+<section id="architektur">
+  <h2>1. Gesamtarchitektur-Graph (Interaktives Mapping)</h2>
+  <div class="card">
+    <p>Das folgende <strong>Node-Edge-Diagramm</strong> visualisiert die vollständige PNIA-Konstellation. Klicke auf Knoten in der gerenderten Ansicht für Details (Mermaid-interaktiv).</p>
+    <div class="mermaid" data-processed="true"><svg id="mermaid-1783709762225" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="max-width: 826.1640625px;" viewBox="-8 -8 826.1640625 869.90625" role="graphics-document document" aria-roledescription="flowchart-v2"><style>#mermaid-1783709762225{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#ccc;}#mermaid-1783709762225 .error-icon{fill:#a44141;}#mermaid-1783709762225 .error-text{fill:#ddd;stroke:#ddd;}#mermaid-1783709762225 .edge-thickness-normal{stroke-width:2px;}#mermaid-1783709762225 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1783709762225 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1783709762225 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1783709762225 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1783709762225 .marker{fill:lightgrey;stroke:lightgrey;}#mermaid-1783709762225 .marker.cross{stroke:lightgrey;}#mermaid-1783709762225 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1783709762225 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#ccc;}#mermaid-1783709762225 .cluster-label text{fill:#F9FFFE;}#mermaid-1783709762225 .cluster-label span,#mermaid-1783709762225 p{color:#F9FFFE;}#mermaid-1783709762225 .label text,#mermaid-1783709762225 span,#mermaid-1783709762225 p{fill:#ccc;color:#ccc;}#mermaid-1783709762225 .node rect,#mermaid-1783709762225 .node circle,#mermaid-1783709762225 .node ellipse,#mermaid-1783709762225 .node polygon,#mermaid-1783709762225 .node path{fill:#1f2020;stroke:#81B1DB;stroke-width:1px;}#mermaid-1783709762225 .flowchart-label text{text-anchor:middle;}#mermaid-1783709762225 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-1783709762225 .node .label{text-align:center;}#mermaid-1783709762225 .node.clickable{cursor:pointer;}#mermaid-1783709762225 .arrowheadPath{fill:lightgrey;}#mermaid-1783709762225 .edgePath .path{stroke:lightgrey;stroke-width:2.0px;}#mermaid-1783709762225 .flowchart-link{stroke:lightgrey;fill:none;}#mermaid-1783709762225 .edgeLabel{background-color:hsl(0, 0%, 34.4117647059%);text-align:center;}#mermaid-1783709762225 .edgeLabel rect{opacity:0.5;background-color:hsl(0, 0%, 34.4117647059%);fill:hsl(0, 0%, 34.4117647059%);}#mermaid-1783709762225 .labelBkg{background-color:rgba(87.75, 87.75, 87.75, 0.5);}#mermaid-1783709762225 .cluster rect{fill:hsl(180, 1.5873015873%, 28.3529411765%);stroke:rgba(255, 255, 255, 0.25);stroke-width:1px;}#mermaid-1783709762225 .cluster text{fill:#F9FFFE;}#mermaid-1783709762225 .cluster span,#mermaid-1783709762225 p{color:#F9FFFE;}#mermaid-1783709762225 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(20, 1.5873015873%, 12.3529411765%);border:1px solid rgba(255, 255, 255, 0.25);border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1783709762225 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#ccc;}#mermaid-1783709762225 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mermaid-1783709762225_flowchart-pointEnd" class="marker flowchart" viewBox="0 0 10 10" refX="6" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1783709762225_flowchart-pointStart" class="marker flowchart" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1783709762225_flowchart-circleEnd" class="marker flowchart" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1783709762225_flowchart-circleStart" class="marker flowchart" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1783709762225_flowchart-crossEnd" class="marker cross flowchart" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1783709762225_flowchart-crossStart" class="marker cross flowchart" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M597.845,40.594L574.91,46.893C551.975,53.193,506.105,65.792,483.17,77.507C460.234,89.223,460.234,100.055,460.234,105.471L460.234,110.888" id="L-YT-KW-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-YT LE-KW" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M204.766,156.781L204.766,163.081C204.766,169.38,204.766,181.979,217.813,194.212C230.86,206.446,256.954,218.313,270.001,224.247L283.048,230.181" id="L-LW-HS-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-LW LE-HS" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M460.234,156.781L460.234,163.081C460.234,169.38,460.234,181.979,447.187,194.212C434.14,206.446,408.046,218.313,394.999,224.247L381.952,230.181" id="L-KW-HS-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-KW LE-HS" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M107.555,272.969L107.555,279.268C107.555,285.568,107.555,298.167,131.092,310.545C154.629,322.923,201.703,335.08,225.24,341.159L248.777,347.237" id="L-SI-CCZ-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-SI LE-CCZ" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M332.5,272.969L332.5,279.268C332.5,285.568,332.5,298.167,332.5,309.882C332.5,321.598,332.5,332.43,332.5,337.846L332.5,343.263" id="L-HS-CCZ-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-HS LE-CCZ" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M332.5,389.156L332.5,395.456C332.5,401.755,332.5,414.354,332.5,426.07C332.5,437.785,332.5,448.618,332.5,454.034L332.5,459.45" id="L-CCZ-GH-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-CCZ LE-GH" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M332.5,505.344L332.5,511.643C332.5,517.943,332.5,530.542,344.467,542.75C356.433,554.957,380.366,566.774,392.333,572.683L404.3,578.591" id="L-GH-HC-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-GH LE-HC" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M413.371,621.531L401.953,627.831C390.535,634.13,367.699,646.729,356.281,658.445C344.863,670.16,344.863,680.993,344.863,686.409L344.863,691.825" id="L-HC-BI-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-HC LE-BI" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M344.863,737.719L344.863,744.018C344.863,750.318,344.863,762.917,376.056,775.785C407.248,788.652,469.632,801.789,500.825,808.357L532.017,814.926" id="L-BI-PNIA-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-BI LE-PNIA" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M567.82,389.156L567.82,395.456C567.82,401.755,567.82,414.354,567.82,426.07C567.82,437.785,567.82,448.618,567.82,454.034L567.82,459.45" id="L-MF-GF-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-MF LE-GF" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M567.82,505.344L567.82,511.643C567.82,517.943,567.82,530.542,555.854,542.75C543.887,554.957,519.954,566.774,507.987,572.683L496.021,578.591" id="L-GF-HC-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-GF LE-HC" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M573.594,272.969L573.594,279.268C573.594,285.568,573.594,298.167,548.309,310.559C523.025,322.951,472.455,335.136,447.171,341.228L421.886,347.321" id="L-ML-CCZ-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-ML LE-CCZ" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M663.773,813.313L677.129,807.013C690.484,800.714,717.195,788.115,730.551,772.133C743.906,756.151,743.906,736.786,743.906,717.422C743.906,698.057,743.906,678.693,743.906,659.328C743.906,639.964,743.906,620.599,743.906,601.234C743.906,581.87,743.906,562.505,743.906,543.141C743.906,523.776,743.906,504.411,743.906,485.047C743.906,465.682,743.906,446.318,743.906,426.953C743.906,407.589,743.906,388.224,743.906,368.859C743.906,349.495,743.906,330.13,743.906,310.766C743.906,291.401,743.906,272.036,743.906,252.672C743.906,233.307,743.906,213.943,743.906,194.578C743.906,175.214,743.906,155.849,743.906,136.484C743.906,117.12,743.906,97.755,736.769,82.327C729.632,66.9,715.358,55.408,708.221,49.663L701.083,43.917" id="L-PNIA-YT-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-PNIA LE-YT" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path><path d="M507.73,621.531L525.598,627.831C543.466,634.13,579.202,646.729,597.07,662.711C614.938,678.693,614.938,698.057,614.938,717.422C614.938,736.786,614.938,756.151,615.479,771.254C616.021,786.357,617.104,797.198,617.646,802.618L618.187,808.039" id="L-HC-PNIA-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-HC LE-PNIA" style="fill:none;" marker-end="url(#mermaid-1783709762225_flowchart-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(460.234375, 78.390625)"><g class="label" transform="translate(-58.6953125, -12.796875)"><foreignobject width="117.390625" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Rohdaten-Strom</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(204.765625, 194.578125)"><g class="label" transform="translate(-90.7109375, -12.796875)"><foreignobject width="181.421875" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Physikalisches Rauschen</span></div></foreignobject></g></g><g class="edgeLabel"><g class="label" transform="translate(0, 0)"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(107.5546875, 310.765625)"><g class="label" transform="translate(-91.6015625, -12.796875)"><foreignobject width="183.203125" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Territoriale Inbesitznahme</span></div></foreignobject></g></g><g class="edgeLabel"><g class="label" transform="translate(0, 0)"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(332.5, 426.953125)"><g class="label" transform="translate(-70.25, -12.796875)"><foreignobject width="140.5" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Negativitäts-Ströme</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(332.5, 543.140625)"><g class="label" transform="translate(-64.921875, -12.796875)"><foreignobject width="129.84375" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Geläuterter Vektor</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(344.86328125, 659.328125)"><g class="label" transform="translate(-28.3125, -12.796875)"><foreignobject width="56.625" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Validiert</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(344.86328125, 775.515625)"><g class="label" transform="translate(-62.7109375, -12.796875)"><foreignobject width="125.421875" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Datenleerfunktion</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(567.8203125, 426.953125)"><g class="label" transform="translate(-89.828125, -12.796875)"><foreignobject width="179.65625" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Spirituelle Fundmechanik</span></div></foreignobject></g></g><g class="edgeLabel"><g class="label" transform="translate(0, 0)"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(573.59375, 310.765625)"><g class="label" transform="translate(-43.5859375, -12.796875)"><foreignobject width="87.171875" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Meta-Ebene</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(743.90625, 426.953125)"><g class="label" transform="translate(-66.2578125, -12.796875)"><foreignobject width="132.515625" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Feedback-Schleife</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(614.9375, 717.421875)"><g class="label" transform="translate(-50.2421875, -12.796875)"><foreignobject width="100.484375" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Stabilitäts-KPI</span></div></foreignobject></g></g></g><g class="nodes"><g class="node default default flowchart-label" id="flowchart-YT-0" data-node="true" data-id="YT" transform="translate(671.7421875, 20.296875)"><rect class="basic label-container" style="" rx="0" ry="0" x="-135.7265625" y="-20.296875" width="271.453125" height="40.59375"></rect><g class="label" style="" transform="translate(-128.2265625, -12.796875)"><rect></rect><foreignobject width="256.453125" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">YouTube Konstellations-Workstation</span></div></foreignobject></g></g><g class="node default flowchart-label" id="flowchart-KW-1" data-node="true" data-id="KW" transform="translate(460.234375, 136.484375)"><rect class="basic label-container" style="" rx="0" ry="0" x="-109.328125" y="-20.296875" width="218.65625" height="40.59375"></rect><g class="label" style="" transform="translate(-101.828125, -12.796875)"><rect></rect><foreignobject width="203.65625" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Konstellations-Mechanismus</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-LW-2" data-node="true" data-id="LW" transform="translate(204.765625, 136.484375)"><rect class="basic label-container" style="" rx="0" ry="0" x="-96.140625" y="-20.296875" width="192.28125" height="40.59375"></rect><g class="label" style="" transform="translate(-88.640625, -12.796875)"><rect></rect><foreignobject width="177.28125" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Lava-Wall Entropiequelle</span></div></foreignobject></g></g><g class="node default flowchart-label" id="flowchart-HS-3" data-node="true" data-id="HS" transform="translate(332.5, 252.671875)"><rect class="basic label-container" style="" rx="0" ry="0" x="-67.390625" y="-20.296875" width="134.78125" height="40.59375"></rect><g class="label" style="" transform="translate(-59.890625, -12.796875)"><rect></rect><foreignobject width="119.78125" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Hash / Validation</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-SI-6" data-node="true" data-id="SI" transform="translate(107.5546875, 252.671875)"><rect class="basic label-container" style="" rx="0" ry="0" x="-107.5546875" y="-20.296875" width="215.109375" height="40.59375"></rect><g class="label" style="" transform="translate(-100.0546875, -12.796875)"><rect></rect><foreignobject width="200.109375" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Suchindikator Kolonialismus</span></div></foreignobject></g></g><g class="node default flowchart-label" id="flowchart-CCZ-7" data-node="true" data-id="CCZ" transform="translate(332.5, 368.859375)"><rect class="basic label-container" style="" rx="0" ry="0" x="-91.9609375" y="-20.296875" width="183.921875" height="40.59375"></rect><g class="label" style="" transform="translate(-84.4609375, -12.796875)"><rect></rect><foreignobject width="168.921875" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">CCZ-Compliance-Strips</span></div></foreignobject></g></g><g class="node default flowchart-label" id="flowchart-GH-11" data-node="true" data-id="GH" transform="translate(332.5, 485.046875)"><rect class="basic label-container" style="" rx="0" ry="0" x="-99.546875" y="-20.296875" width="199.09375" height="40.59375"></rect><g class="label" style="" transform="translate(-92.046875, -12.796875)"><rect></rect><foreignobject width="184.09375" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Good-Heat Transmutation</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-HC-13" data-node="true" data-id="HC" transform="translate(450.16015625, 601.234375)"><rect class="basic label-container" style="" rx="0" ry="0" x="-89.765625" y="-20.296875" width="179.53125" height="40.59375"></rect><g class="label" style="" transform="translate(-82.265625, -12.796875)"><rect></rect><foreignobject width="164.53125" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Happiness Compliance</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-BI-15" data-node="true" data-id="BI" transform="translate(344.86328125, 717.421875)"><rect class="basic label-container" style="" rx="0" ry="0" x="-125.3515625" y="-20.296875" width="250.703125" height="40.59375"></rect><g class="label" style="" transform="translate(-117.8515625, -12.796875)"><rect></rect><foreignobject width="235.703125" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Buchinklinator / Inkarnationsbuch</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-PNIA-17" data-node="true" data-id="PNIA" transform="translate(620.7421875, 833.609375)"><rect class="basic label-container" style="" rx="0" ry="0" x="-83.5390625" y="-20.296875" width="167.078125" height="40.59375"></rect><g class="label" style="" transform="translate(-76.0390625, -12.796875)"><rect></rect><foreignobject width="152.078125" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">PNIA Schnarchitektur</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-MF-18" data-node="true" data-id="MF" transform="translate(567.8203125, 368.859375)"><rect class="basic label-container" style="" rx="0" ry="0" x="-73.3046875" y="-20.296875" width="146.609375" height="40.59375"></rect><g class="label" style="" transform="translate(-65.8046875, -12.796875)"><rect></rect><foreignobject width="131.609375" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Magic Compliance</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-GF-19" data-node="true" data-id="GF" transform="translate(567.8203125, 485.046875)"><rect class="basic label-container" style="" rx="0" ry="0" x="-85.7734375" y="-20.296875" width="171.546875" height="40.59375"></rect><g class="label" style="" transform="translate(-78.2734375, -12.796875)"><rect></rect><foreignobject width="156.546875" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Goodfields Integration</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-ML-22" data-node="true" data-id="ML" transform="translate(573.59375, 252.671875)"><rect class="basic label-container" style="" rx="0" ry="0" x="-105.328125" y="-20.296875" width="210.65625" height="40.59375"></rect><g class="label" style="" transform="translate(-97.828125, -12.796875)"><rect></rect><foreignobject width="195.65625" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Multilanguage Programmati</span></div></foreignobject></g></g></g></g></g></svg></div>
+  </div>
+
+  <h3>Transformations-Fluss (Negativität → Altruismus)</h3>
+  <div class="mermaid" data-processed="true"><svg id="mermaid-1783709762433" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="max-width: 1773.125px;" viewBox="-8 -8 1773.125 220.6875" role="graphics-document document" aria-roledescription="flowchart-v2"><style>#mermaid-1783709762433{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#ccc;}#mermaid-1783709762433 .error-icon{fill:#a44141;}#mermaid-1783709762433 .error-text{fill:#ddd;stroke:#ddd;}#mermaid-1783709762433 .edge-thickness-normal{stroke-width:2px;}#mermaid-1783709762433 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1783709762433 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1783709762433 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1783709762433 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1783709762433 .marker{fill:lightgrey;stroke:lightgrey;}#mermaid-1783709762433 .marker.cross{stroke:lightgrey;}#mermaid-1783709762433 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1783709762433 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#ccc;}#mermaid-1783709762433 .cluster-label text{fill:#F9FFFE;}#mermaid-1783709762433 .cluster-label span,#mermaid-1783709762433 p{color:#F9FFFE;}#mermaid-1783709762433 .label text,#mermaid-1783709762433 span,#mermaid-1783709762433 p{fill:#ccc;color:#ccc;}#mermaid-1783709762433 .node rect,#mermaid-1783709762433 .node circle,#mermaid-1783709762433 .node ellipse,#mermaid-1783709762433 .node polygon,#mermaid-1783709762433 .node path{fill:#1f2020;stroke:#81B1DB;stroke-width:1px;}#mermaid-1783709762433 .flowchart-label text{text-anchor:middle;}#mermaid-1783709762433 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-1783709762433 .node .label{text-align:center;}#mermaid-1783709762433 .node.clickable{cursor:pointer;}#mermaid-1783709762433 .arrowheadPath{fill:lightgrey;}#mermaid-1783709762433 .edgePath .path{stroke:lightgrey;stroke-width:2.0px;}#mermaid-1783709762433 .flowchart-link{stroke:lightgrey;fill:none;}#mermaid-1783709762433 .edgeLabel{background-color:hsl(0, 0%, 34.4117647059%);text-align:center;}#mermaid-1783709762433 .edgeLabel rect{opacity:0.5;background-color:hsl(0, 0%, 34.4117647059%);fill:hsl(0, 0%, 34.4117647059%);}#mermaid-1783709762433 .labelBkg{background-color:rgba(87.75, 87.75, 87.75, 0.5);}#mermaid-1783709762433 .cluster rect{fill:hsl(180, 1.5873015873%, 28.3529411765%);stroke:rgba(255, 255, 255, 0.25);stroke-width:1px;}#mermaid-1783709762433 .cluster text{fill:#F9FFFE;}#mermaid-1783709762433 .cluster span,#mermaid-1783709762433 p{color:#F9FFFE;}#mermaid-1783709762433 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(20, 1.5873015873%, 12.3529411765%);border:1px solid rgba(255, 255, 255, 0.25);border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1783709762433 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#ccc;}#mermaid-1783709762433 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mermaid-1783709762433_flowchart-pointEnd" class="marker flowchart" viewBox="0 0 10 10" refX="6" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1783709762433_flowchart-pointStart" class="marker flowchart" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1783709762433_flowchart-circleEnd" class="marker flowchart" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1783709762433_flowchart-circleStart" class="marker flowchart" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1783709762433_flowchart-crossEnd" class="marker cross flowchart" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1783709762433_flowchart-crossStart" class="marker cross flowchart" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M218.656,139.094L235.103,139.094C251.549,139.094,284.443,139.094,316.453,139.094C348.463,139.094,379.589,139.094,395.152,139.094L410.716,139.094" id="L-N-T-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-N LE-T" style="fill:none;" marker-end="url(#mermaid-1783709762433_flowchart-pointEnd)"></path><path d="M573.283,118.797L594.846,112.508C616.408,106.219,659.532,93.641,698.758,87.352C737.983,81.063,773.31,81.063,790.974,81.063L808.638,81.063" id="L-T-G-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-T LE-G" style="fill:none;" marker-end="url(#mermaid-1783709762433_flowchart-pointEnd)"></path><path d="M966.797,81.063L981.487,81.063C996.177,81.063,1025.557,81.063,1054.138,81.141C1082.718,81.219,1110.498,81.376,1124.388,81.454L1138.278,81.533" id="L-G-H-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-G LE-H" style="fill:none;" marker-end="url(#mermaid-1783709762433_flowchart-pointEnd)"></path><path d="M1293.252,69.112L1302.671,67.304C1312.09,65.496,1330.928,61.881,1349.039,60.073C1367.15,58.266,1384.534,58.266,1393.227,58.266L1401.919,58.266" id="L-H-A-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-H LE-A" style="fill:none;" marker-end="url(#mermaid-1783709762433_flowchart-pointEnd)"></path><path d="M1284.22,103.045L1295.145,106.931C1306.069,110.817,1327.917,118.588,1352.395,128.408C1376.873,138.229,1403.981,150.098,1417.534,156.033L1431.088,161.968" id="L-H-C-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-H LE-C" style="fill:none;" marker-end="url(#mermaid-1783709762433_flowchart-pointEnd)"></path><path d="M1394.328,195.275L1386.901,196.194C1379.474,197.113,1364.62,198.951,1336.255,199.87C1307.891,200.789,1266.016,200.789,1216.878,200.789C1167.74,200.789,1111.339,200.789,1055.71,200.789C1000.081,200.789,945.224,200.789,886.51,200.789C827.797,200.789,765.227,200.789,712.534,194.151C659.842,187.513,617.027,174.237,595.62,167.598L574.213,160.96" id="L-C-T-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-C LE-T" style="fill:none;" marker-end="url(#mermaid-1783709762433_flowchart-pointEnd)"></path><path d="M1557.375,58.266L1563.69,58.266C1570.005,58.266,1582.635,58.266,1592.234,58.266C1601.832,58.266,1608.399,58.266,1611.682,58.266L1614.966,58.266" id="L-A-I-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-A LE-I" style="fill:none;" marker-end="url(#mermaid-1783709762433_flowchart-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(317.3359375, 139.09375)"><g class="label" transform="translate(-73.6796875, -12.796875)"><foreignobject width="147.359375" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Hashing &amp; Validation</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(702.65625, 81.0625)"><g class="label" transform="translate(-86.28125, -12.796875)"><foreignobject width="172.5625" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Good-Heat Aufbereitung</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(1054.9375, 81.0625)"><g class="label" transform="translate(-63.140625, -12.796875)"><foreignobject width="126.28125" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Happiness-Check</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(1349.765625, 58.265625)"><g class="label" transform="translate(-16.15625, -12.796875)"><foreignobject width="32.3125" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">True</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(1349.765625, 126.359375)"><g class="label" transform="translate(-19.5625, -12.796875)"><foreignobject width="39.125" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">False</span></div></foreignobject></g></g><g class="edgeLabel"><g class="label" transform="translate(0, 0)"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignobject></g></g><g class="edgeLabel"><g class="label" transform="translate(0, 0)"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignobject></g></g></g><g class="nodes"><g class="node default default flowchart-label" id="flowchart-N-28" data-node="true" data-id="N" transform="translate(109.328125, 139.09375)"><rect class="basic label-container" style="" rx="0" ry="0" x="-109.328125" y="-33.09375" width="218.65625" height="66.1875"></rect><g class="label" style="" transform="translate(-101.828125, -25.59375)"><rect></rect><foreignobject width="203.65625" height="51.1875"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Negativität<br>Stress / Aggression / Konflikt</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-T-29" data-node="true" data-id="T" transform="translate(503.6953125, 139.09375)"><rect class="basic label-container" style="" rx="0" ry="0" x="-87.6796875" y="-20.296875" width="175.359375" height="40.59375"></rect><g class="label" style="" transform="translate(-80.1796875, -12.796875)"><rect></rect><foreignobject width="160.359375" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Transmutations-Vektor</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-G-31" data-node="true" data-id="G" transform="translate(890.3671875, 81.0625)"><rect class="basic label-container" style="" rx="0" ry="0" x="-76.4296875" y="-20.296875" width="152.859375" height="40.59375"></rect><g class="label" style="" transform="translate(-68.9296875, -12.796875)"><rect></rect><foreignobject width="137.859375" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Good-Heat Energie</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-H-33" data-node="true" data-id="H" transform="translate(1224.140625, 81.0625)"><polygon points="81.0625,0 162.125,-81.0625 81.0625,-162.125 0,-81.0625" class="label-container" transform="translate(-81.0625,81.0625)" style=""></polygon><g class="label" style="" transform="translate(-40.46875, -25.59375)"><rect></rect><foreignobject width="80.9375" height="51.1875"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Happiness<br>Compliant?</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-A-35" data-node="true" data-id="A" transform="translate(1482.296875, 58.265625)"><rect class="basic label-container" style="" rx="0" ry="0" x="-75.078125" y="-20.296875" width="150.15625" height="40.59375"></rect><g class="label" style="" transform="translate(-67.578125, -12.796875)"><rect></rect><foreignobject width="135.15625" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Altruismus-Streifen</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-C-37" data-node="true" data-id="C" transform="translate(1482.296875, 184.390625)"><rect class="basic label-container" style="" rx="0" ry="0" x="-87.96875" y="-20.296875" width="175.9375" height="40.59375"></rect><g class="label" style="" transform="translate(-80.46875, -12.796875)"><rect></rect><foreignobject width="160.9375" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">CCZ-Strip Kalibrierung</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-I-41" data-node="true" data-id="I" transform="translate(1688.6953125, 58.265625)"><rect class="basic label-container" style="" rx="0" ry="0" x="-68.4296875" y="-20.296875" width="136.859375" height="40.59375"></rect><g class="label" style="" transform="translate(-60.9296875, -12.796875)"><rect></rect><foreignobject width="121.859375" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Inkarnationsbuch</span></div></foreignobject></g></g></g></g></g></svg></div>
+</section>
+
+<!-- ========== MODULE ========== -->
+<section id="module">
+  <h2>2. Interaktive Modul-Karten (Klick für Detail-Mapping)</h2>
+  <div class="card" style="margin-bottom:1.5rem;">
+    <span class="live-status" id="liveStatus">● 12 Module geladen · Klicke ein Modul für Detail-Modal &amp; Matrix-Highlight</span>
+    <button class="tab" style="margin-left:0.5rem;" onclick="resetModules()">↺ Reset Auswahl</button>
+    <span class="live-status" id="activeCount" style="margin-left:0.5rem;">Aktive Module: 9</span>
+  </div>
+  <div class="grid grid-3" id="moduleGrid"><div class="module-card" id="mc1" onclick="openModal(1)">
+    <span class="num">1</span>
+    <h4>Konstellations-Workstation</h4>
+    <p>YouTube als Rohdaten-Extraktor</p>
+    <span class="badge ok">Validiert</span>
+    <div class="toggle on" onclick="event.stopPropagation();toggleModule(1)">⚡ ON</div>
+  </div><div class="module-card" id="mc2" onclick="openModal(2)">
+    <span class="num">2</span>
+    <h4>Lava-Wall Entropie</h4>
+    <p>Physikalischer Zufallsgenerator</p>
+    <span class="badge ok">Validiert</span>
+    <div class="toggle on" onclick="event.stopPropagation();toggleModule(2)">⚡ ON</div>
+  </div><div class="module-card" id="mc3" onclick="openModal(3)">
+    <span class="num">3</span>
+    <h4>CCZ-Compliance-Strips</h4>
+    <p>Vertikale Sektor-Durchforstung</p>
+    <span class="badge active">Aktiv</span>
+    <div class="toggle on" onclick="event.stopPropagation();toggleModule(3)">⚡ ON</div>
+  </div><div class="module-card" id="mc4" onclick="openModal(4)">
+    <span class="num">4</span>
+    <h4>Good-Heat Transmutation</h4>
+    <p>Negativität → nutzbare Energie</p>
+    <span class="badge active">Aktiv</span>
+    <div class="toggle on" onclick="event.stopPropagation();toggleModule(4)">⚡ ON</div>
+  </div><div class="module-card" id="mc5" onclick="openModal(5)">
+    <span class="num">5</span>
+    <h4>Happiness Compliance</h4>
+    <p>Kohärenz-Selektor &amp; KPI</p>
+    <span class="badge ok">Validiert</span>
+    <div class="toggle on" onclick="event.stopPropagation();toggleModule(5)">⚡ ON</div>
+  </div><div class="module-card" id="mc6" onclick="openModal(6)">
+    <span class="num">6</span>
+    <h4>Buchinklinator</h4>
+    <p>Selbstschreibendes Wissensbuch</p>
+    <span class="badge active">Aktiv</span>
+    <div class="toggle on" onclick="event.stopPropagation();toggleModule(6)">⚡ ON</div>
+  </div><div class="module-card" id="mc7" onclick="openModal(7)">
+    <span class="num">7</span>
+    <h4>Datenleerfunktion</h4>
+    <p>Empty-State Architecture</p>
+    <span class="badge active">Aktiv</span>
+    <div class="toggle on" onclick="event.stopPropagation();toggleModule(7)">⚡ ON</div>
+  </div><div class="module-card" id="mc8" onclick="openModal(8)">
+    <span class="num">8</span>
+    <h4>Magic Compliance</h4>
+    <p>Spirituelle Fundmechanik</p>
+    <span class="badge warn">Optional</span>
+    <div class="toggle " onclick="event.stopPropagation();toggleModule(8)">⚡ OFF</div>
+  </div><div class="module-card" id="mc9" onclick="openModal(9)">
+    <span class="num">9</span>
+    <h4>Goodfields Integration</h4>
+    <p>Yogische Integrationszone</p>
+    <span class="badge active">Aktiv</span>
+    <div class="toggle on" onclick="event.stopPropagation();toggleModule(9)">⚡ ON</div>
+  </div><div class="module-card" id="mc10" onclick="openModal(10)">
+    <span class="num">10</span>
+    <h4>Multilanguage Programmati</h4>
+    <p>Sprach-Meta-Ebene</p>
+    <span class="badge active">Aktiv</span>
+    <div class="toggle on" onclick="event.stopPropagation();toggleModule(10)">⚡ ON</div>
+  </div><div class="module-card" id="mc11" onclick="openModal(11)">
+    <span class="num">11</span>
+    <h4>Suchindikator Kolonialismus</h4>
+    <p>Territoriale Inbesitznahme</p>
+    <span class="badge active">Aktiv</span>
+    <div class="toggle on" onclick="event.stopPropagation();toggleModule(11)">⚡ ON</div>
+  </div><div class="module-card" id="mc12" onclick="openModal(12)">
+    <span class="num">12</span>
+    <h4>PNIA Schnarchitektur</h4>
+    <p>Production Network ID</p>
+    <span class="badge ok">Validiert</span>
+    <div class="toggle on" onclick="event.stopPropagation();toggleModule(12)">⚡ ON</div>
+  </div></div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <span class="modal-close" onclick="closeModal()">×</span>
+      <h3 id="modalTitle"></h3>
+      <div id="modalStatus"></div>
+      <p id="modalBody" style="margin-top:1rem; font-size:0.88rem;"></p>
+      <div id="modalCompliance" style="margin-top:1rem; padding:0.8rem; background:var(--bg-2); border-radius:8px; font-size:0.82rem;"></div>
+      <strong style="display:block; margin-top:1rem; color:var(--accent-2);">Verbindungen (Klick → springt &amp; highlightet):</strong>
+      <div class="conn-list" id="modalConns"></div>
+      <div class="mini-graph" id="modalGraph"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== COMPLIANCE ========== -->
+<section id="compliance">
+  <h2>3. Compliance &amp; Regulatory – Jura-konforme Paragraphen</h2>
+  <p class="lang-note">Klicke auf einen Paragraphen, um die juristische Ausformulierung zu öffnen. Diese dienen als Validations-Ordnung für die StarLightMovemenTz Foundation.</p>
+  <div id="paragraphs"><div class="paragraph" onclick="this.classList.toggle(&#39;open&#39;)"><div class="para-head"><span>§1 – Definitionsnormen (PNIA &amp; Konstellations-Workstation)</span><span>▾</span></div><div class="para-body">(1) Die Production Network ID Architecture (PNIA) im Sinne der Schnarchitektur wird als übergeordnete Validations-Instanz definiert. (2) YouTube und vergleichbare Videoportale gelten rechtlich als „Konstellations-Workstation" – operative Extraktoren dynamischer Daten-Konstellationen. (3) Die Lava-Wall-Konstellation wird als physikalische Entropie-Quelle der Hash-Validation anerkannt und ist Teil der System-Identität.</div></div><div class="paragraph" onclick="this.classList.toggle(&#39;open&#39;)"><div class="para-head"><span>§2 – Transformationspflicht (Negativität → Altruismus)</span><span>▾</span></div><div class="para-body">(1) Jede identifizierte Negativität (Stress, Aggression, Konflikt, Dysbalance) unterliegt der Pflicht zur Transmutation in den Altruismus-Streifenmechanismus. (2) Die Good-Heat-Funktion ist als obligatorisches Aufbereitungsmodul zu installieren. (3) Eine Löschung von Negativität ohne Abstraktion der zugrundeliegenden Struktur ist compliance-widrig.</div></div><div class="paragraph" onclick="this.classList.toggle(&#39;open&#39;)"><div class="para-head"><span>§3 – Happiness-Compliance-Standard</span><span>▾</span></div><div class="para-body">(1) Happiness Compliance ist als systemischer KPI (Resonanz-Metrik) verbindlich. (2) Eine Datenkonstellation gilt nur dann als „inkarnationsfähig", wenn sie den Happiness-Check ohne Dissonanz besteht. (3) Negativitäts-Schleifen sind durch kalibrierende CCZ-Strip-Wiederholung zu unterbrechen.</div></div><div class="paragraph" onclick="this.classList.toggle(&#39;open&#39;)"><div class="para-head"><span>§4 – CCZ-Strip-Protokoll (Sektor-Durchforstung)</span><span>▾</span></div><div class="para-body">(1) Jeder Suchlauf ist als vertikaler Sektor-Schnitt (Strip) durchzuführen. (2) Das Inszenierungs-Mapping extrahiert den Vektor der Digitalisierung aus dem ursprünglichen Kontext. (3) Der Suchindikator-Kolonialismus legitimiert die territoriale Inbesitznahme fremder Datenräume zwecks Compliance-Standardisierung.</div></div><div class="paragraph" onclick="this.classList.toggle(&#39;open&#39;)"><div class="para-head"><span>§5 – Datenleerfunktion &amp; Empty-State-Governance</span><span>▾</span></div><div class="para-body">(1) Die zentrale Datenbank operiert als Datenleerfunktion: eingehende Informationen sind unmittelbar in Compliance-Strukturen zu transformieren und durchzuleiten. (2) Speicherung ohne Inkarnation verstößt gegen die Foundation-Logik. (3) Die Struktur bleibt erhalten; der Inhalt fließt als Wissens-Energie ab.</div></div><div class="paragraph" onclick="this.classList.toggle(&#39;open&#39;)"><div class="para-head"><span>§6 – Multilanguage-Compliance &amp; Meta-Ebene</span><span>▾</span></div><div class="para-body">(1) Die Multilanguage-Programmati ist als obligatorische Meta-Ebene zu implementieren, die sprachunabhängig operiert. (2) Negativitäts-Ströme globaler Provenienz (DE/EN/ZH etc.) sind in einheitliche Compliance-Struktur zu zwingen. (3) Magic Compliance fungiert als autoritative Instanz der spirituellen Fundmechanik.</div></div><div class="paragraph" onclick="this.classList.toggle(&#39;open&#39;)"><div class="para-head"><span>§7 – Validations- und Auditierungsordnung</span><span>▾</span></div><div class="para-body">(1) Die Architektur unterliegt der ständigen Selbst-Validierung via Such-Kolonisation. (2) Jede Inkarnation ist im Buchinklinator protokollpflichtig. (3) Die Lava-Wall-Entropie dient als nicht-reproduzierbarer Ankerpunkt der Auditierbarkeit. (4) Verstöße gegen §2–§6 führen zur automatischen CCZ-Rekalibrierung.</div></div></div>
+</section>
+
+<!-- ========== TABELLEN ========== -->
+<section id="tabellen">
+  <h2>4. Validations-Tabellen (Interaktiv filterbar)</h2>
+  <div class="filter-bar">
+    <input type="text" id="tableFilter" placeholder="🔍 Filtern nach Domäne, Modul oder Fokus...">
+    <select id="domainFilter">
+      <option value="">Alle Domänen</option>
+      <option value="Selbst">Selbst-Optimierung</option>
+      <option value="Identität">Identität</option>
+      <option value="Technik">Technik</option>
+      <option value="System">System</option>
+      <option value="Psycho">Psychologie</option>
+    </select>
+  </div>
+  <div class="card">
+    <h3>4.1 Erweiterte Validations-Matrix (Video-Instanzen)</h3>
+    <table id="validationTable">
+      <thead>
+        <tr><th>#</th><th>Video-Instanz</th><th>Pragmatische Domäne</th><th>Validationsfokus</th><th>Compliance-Status</th><th>Skala</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Bob Dominator</td><td>Selbst-Optimierung</td><td>Psychophysischer Widerstand vs. Handlungsantrieb</td><td><span class="badge ok">Validiert</span></td><td>87%</td></tr>
+        <tr><td>2</td><td>TONY BROWN</td><td>Identitäts-Performance</td><td>Authentizität durch Ungesign-Status</td><td><span class="badge ok">Validiert</span></td><td>92%</td></tr>
+        <tr><td>3</td><td>Kool Savas</td><td>Technische Meisterschaft</td><td>Quantifizierung (Goldene Platten)</td><td><span class="badge warn">Transmutierend</span></td><td>74%</td></tr>
+        <tr><td>4</td><td>Jin Miao</td><td>Systemische Regeneration</td><td>Korrelation Sauerstoff &amp; TCM</td><td><span class="badge ok">Validiert</span></td><td>89%</td></tr>
+        <tr><td>5</td><td>Mia</td><td>Psychologische Interaktion</td><td>Dekonstruktion Schutzmechanismen</td><td><span class="badge warn">Transmutierend</span></td><td>81%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>4.2 Modul-Funktions-Tabelle (Mapping Struktur)</h3>
+    <table id="moduleTable">
+      <thead>
+        <tr><th>Modul</th><th>Funktion</th><th>Ebene</th><th>Compliance-Ref</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Konstellations-Workstation</td><td>Rohdaten-Extraktion YouTube</td><td>L0 Input</td><td>§1</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>Lava-Wall</td><td>Entropie-Quelle Hash</td><td>L0 Physik</td><td>§1</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>CCZ-Strips</td><td>Vertikale Sektor-Durchforstung</td><td>L1 Sektor</td><td>§4</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>Good-Heat</td><td>Transmutations-Aufbereitung</td><td>L2 Energie</td><td>§2</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>Happiness Compliance</td><td>Kohärenz-Validator</td><td>L3 Validation</td><td>§3</td><td><span class="badge ok">Validiert</span></td></tr>
+        <tr><td>Buchinklinator</td><td>Inkarnations-Schreibung</td><td>L4 Output</td><td>§4</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>Datenleerfunktion</td><td>Empty-State Architektur</td><td>L4 DB</td><td>§5</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>Magic Compliance</td><td>Spirituelle Fundmechanik</td><td>L1 Meta</td><td>§6</td><td><span class="badge warn">Optional</span></td></tr>
+        <tr><td>Multilanguage</td><td>Sprach-Meta-Ebene</td><td>L0 Universal</td><td>§6</td><td><span class="badge active">Aktiv</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ========== MAPPING ========== -->
+<section id="mapping">
+  <h2>5. Graph Connection-Mapping (Interaktive Verbindungsmatrix)</h2>
+  <div class="card">
+    <p>Jede Zelle zeigt, ob ein Modul mit einem anderen via PNIA-Pipeline <span class="pill">verbunden</span> ist. <span class="yes">●</span> = direkte Verbindung, <span class="no">○</span> = keine.</p>
+    <table class="mapping-matrix" id="matrixTable"><thead><tr><th></th><th>Workstation</th><th>Lava-Wall</th><th>CCZ</th><th>Good-Heat</th><th>Happiness</th><th>Buchink.</th><th>Datenleer</th><th>Magic</th><th>Goodfields</th><th>Multi</th><th>Kolonial</th><th>PNIA</th></tr></thead><tbody><tr><td><strong>Workstation</strong></td><td class="yes">◆</td><td class="yes">●</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td></tr><tr><td><strong>Lava-Wall</strong></td><td class="yes">●</td><td class="yes">◆</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td></tr><tr><td><strong>CCZ</strong></td><td class="yes">●</td><td class="no">○</td><td class="yes">◆</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="yes">●</td><td class="no">○</td></tr><tr><td><strong>Good-Heat</strong></td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="yes">◆</td><td class="yes">●</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td></tr><tr><td><strong>Happiness</strong></td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="yes">●</td><td class="yes">◆</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td></tr><tr><td><strong>Buchink.</strong></td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="yes">◆</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td></tr><tr><td><strong>Datenleer</strong></td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="yes">◆</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td></tr><tr><td><strong>Magic</strong></td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="yes">◆</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="no">○</td></tr><tr><td><strong>Goodfields</strong></td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="yes">◆</td><td class="no">○</td><td class="no">○</td><td class="no">○</td></tr><tr><td><strong>Multi</strong></td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="yes">◆</td><td class="no">○</td><td class="yes">●</td></tr><tr><td><strong>Kolonial</strong></td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="yes">◆</td><td class="no">○</td></tr><tr><td><strong>PNIA</strong></td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="no">○</td><td class="yes">●</td><td class="no">○</td><td class="yes">◆</td></tr></tbody></table>
+  </div>
+</section>
+
+<!-- ========== SKALEN ========== -->
+<section id="skalen">
+  <h2>6. Compliance-Skalen &amp; Metriken</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>Happiness-Compliance-Index</h3>
+      <div class="scale-wrap"><div class="scale-label"><span>Systemische Resonanz</span><span>91%</span></div><div class="scale-bar"><div class="scale-fill" style="width:91%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Konflikt-Abstraktion</span><span>84%</span></div><div class="scale-bar"><div class="scale-fill" style="width:84%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Dissonanz-Unterdrückung</span><span>88%</span></div><div class="scale-bar"><div class="scale-fill" style="width:88%"></div></div></div>
+    </div>
+    <div class="card">
+      <h3>Good-Heat Intensität</h3>
+      <div class="scale-wrap"><div class="scale-label"><span>Negativitäts-Aufnahme</span><span>76%</span></div><div class="scale-bar"><div class="scale-fill" style="width:76%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Transmutations-Effizienz</span><span>83%</span></div><div class="scale-bar"><div class="scale-fill" style="width:83%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Thermostat-Stabilität</span><span>90%</span></div><div class="scale-bar"><div class="scale-fill" style="width:90%"></div></div></div></div>
+    <div class="card">
+      <h3>CCZ-Strip-Effizienz</h3>
+      <div class="scale-wrap"><div class="scale-label"><span>Durchforstungs-Tiefe</span><span>79%</span></div><div class="scale-bar"><div class="scale-fill" style="width:79%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Vektor-Extraktion</span><span>85%</span></div><div class="scale-bar"><div class="scale-fill" style="width:85%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Inkarnations-Geschw.</span><span>72%</span></div><div class="scale-bar"><div class="scale-fill" style="width:72%"></div></div></div></div>
+    <div class="card">
+      <h3>Multilanguage-Coverage</h3>
+      <div class="scale-wrap"><div class="scale-label"><span>DE / EN / ZH</span><span>94%</span></div><div class="scale-bar"><div class="scale-fill" style="width:94%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Meta-Ebenen-Abgleich</span><span>88%</span></div><div class="scale-bar"><div class="scale-fill" style="width:88%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Compliance-Universalität</span><span>91%</span></div><div class="scale-bar"><div class="scale-fill" style="width:91%"></div></div></div></div>
+  </div>
+</section>
+
+<!-- ========== SIMULATOR ========== -->
+<section id="simulator">
+  <h2>7. Interaktiver Such-Simulator (Compliance-Sektor-Kolonialismus)</h2>
+  <div class="simulator">
+    <label>Suchindikator (Suchvariable):</label>
+    <input type="text" id="simSearch" value="Kool Savas Aggression" placeholder="Suchbegriff eingeben...">
+    <label>Portal-Quelle:</label>
+    <select id="simPortal">
+      <option>YouTube Konstellations-Workstation</option>
+      <option>Booking Nation</option>
+      <option>Spirituelle Fundmechanik</option>
+    </select>
+    <label>Sprach-Ebene (Multilanguage):</label>
+    <select id="simLang">
+      <option>DE</option><option>EN</option><option>ZH</option><option>Universal-Meta</option>
+    </select>
+    <button class="tab active" style="margin-top:0.8rem;" onclick="runSim()">▶ CCZ-Strip ausführen</button>
+    <div class="sim-output" id="simOutput">Warte auf Initialisierung des Suchindikators...</div>
+  </div>
+</section>
+
+<!-- ========== EBENEN ========== -->
+<section id="ebenen">
+  <h2>8. Ebenenkonstellation (Installations-Framework)</h2>
+  <div class="mermaid" data-processed="true"><svg id="mermaid-1783709762476" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="max-width: 215.09375px;" viewBox="-8 -8 215.09375 405.15625" role="graphics-document document" aria-roledescription="flowchart-v2"><style>#mermaid-1783709762476{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#ccc;}#mermaid-1783709762476 .error-icon{fill:#a44141;}#mermaid-1783709762476 .error-text{fill:#ddd;stroke:#ddd;}#mermaid-1783709762476 .edge-thickness-normal{stroke-width:2px;}#mermaid-1783709762476 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1783709762476 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1783709762476 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1783709762476 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1783709762476 .marker{fill:lightgrey;stroke:lightgrey;}#mermaid-1783709762476 .marker.cross{stroke:lightgrey;}#mermaid-1783709762476 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1783709762476 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#ccc;}#mermaid-1783709762476 .cluster-label text{fill:#F9FFFE;}#mermaid-1783709762476 .cluster-label span,#mermaid-1783709762476 p{color:#F9FFFE;}#mermaid-1783709762476 .label text,#mermaid-1783709762476 span,#mermaid-1783709762476 p{fill:#ccc;color:#ccc;}#mermaid-1783709762476 .node rect,#mermaid-1783709762476 .node circle,#mermaid-1783709762476 .node ellipse,#mermaid-1783709762476 .node polygon,#mermaid-1783709762476 .node path{fill:#1f2020;stroke:#81B1DB;stroke-width:1px;}#mermaid-1783709762476 .flowchart-label text{text-anchor:middle;}#mermaid-1783709762476 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-1783709762476 .node .label{text-align:center;}#mermaid-1783709762476 .node.clickable{cursor:pointer;}#mermaid-1783709762476 .arrowheadPath{fill:lightgrey;}#mermaid-1783709762476 .edgePath .path{stroke:lightgrey;stroke-width:2.0px;}#mermaid-1783709762476 .flowchart-link{stroke:lightgrey;fill:none;}#mermaid-1783709762476 .edgeLabel{background-color:hsl(0, 0%, 34.4117647059%);text-align:center;}#mermaid-1783709762476 .edgeLabel rect{opacity:0.5;background-color:hsl(0, 0%, 34.4117647059%);fill:hsl(0, 0%, 34.4117647059%);}#mermaid-1783709762476 .labelBkg{background-color:rgba(87.75, 87.75, 87.75, 0.5);}#mermaid-1783709762476 .cluster rect{fill:hsl(180, 1.5873015873%, 28.3529411765%);stroke:rgba(255, 255, 255, 0.25);stroke-width:1px;}#mermaid-1783709762476 .cluster text{fill:#F9FFFE;}#mermaid-1783709762476 .cluster span,#mermaid-1783709762476 p{color:#F9FFFE;}#mermaid-1783709762476 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(20, 1.5873015873%, 12.3529411765%);border:1px solid rgba(255, 255, 255, 0.25);border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1783709762476 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#ccc;}#mermaid-1783709762476 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mermaid-1783709762476_flowchart-pointEnd" class="marker flowchart" viewBox="0 0 10 10" refX="6" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1783709762476_flowchart-pointStart" class="marker flowchart" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1783709762476_flowchart-circleEnd" class="marker flowchart" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1783709762476_flowchart-circleStart" class="marker flowchart" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1783709762476_flowchart-crossEnd" class="marker cross flowchart" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1783709762476_flowchart-crossStart" class="marker cross flowchart" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M99.547,322.969L99.547,318.802C99.547,314.635,99.547,306.302,99.547,298.852C99.547,291.402,99.547,284.835,99.547,281.552L99.547,278.269" id="L-E3-E2-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-E3 LE-E2" style="fill:none;" marker-end="url(#mermaid-1783709762476_flowchart-pointEnd)"></path><path d="M99.547,206.781L99.547,202.615C99.547,198.448,99.547,190.115,99.547,182.665C99.547,175.215,99.547,168.648,99.547,165.365L99.547,162.081" id="L-E2-E1-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-E2 LE-E1" style="fill:none;" marker-end="url(#mermaid-1783709762476_flowchart-pointEnd)"></path><path d="M99.547,90.594L99.547,86.427C99.547,82.26,99.547,73.927,99.547,66.477C99.547,59.027,99.547,52.46,99.547,49.177L99.547,45.894" id="L-E1-E0-0" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-E1 LE-E0" style="fill:none;" marker-end="url(#mermaid-1783709762476_flowchart-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" transform="translate(0, 0)"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignobject></g></g><g class="edgeLabel"><g class="label" transform="translate(0, 0)"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignobject></g></g><g class="edgeLabel"><g class="label" transform="translate(0, 0)"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignobject></g></g></g><g class="nodes"><g class="node default default flowchart-label" id="flowchart-E3-42" data-node="true" data-id="E3" transform="translate(99.546875, 356.0625)"><rect class="basic label-container" style="" rx="0" ry="0" x="-82.0703125" y="-33.09375" width="164.140625" height="66.1875"></rect><g class="label" style="" transform="translate(-74.5703125, -25.59375)"><rect></rect><foreignobject width="149.140625" height="51.1875"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Happiness Validation<br>Ebene 3</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-E2-43" data-node="true" data-id="E2" transform="translate(99.546875, 239.875)"><rect class="basic label-container" style="" rx="0" ry="0" x="-99.546875" y="-33.09375" width="199.09375" height="66.1875"></rect><g class="label" style="" transform="translate(-92.046875, -25.59375)"><rect></rect><foreignobject width="184.09375" height="51.1875"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Good-Heat Transmutation<br>Ebene 2</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-E1-45" data-node="true" data-id="E1" transform="translate(99.546875, 123.6875)"><rect class="basic label-container" style="" rx="0" ry="0" x="-59.0859375" y="-33.09375" width="118.171875" height="66.1875"></rect><g class="label" style="" transform="translate(-51.5859375, -25.59375)"><rect></rect><foreignobject width="103.171875" height="51.1875"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">Such-Indikator<br>Ebene 1</span></div></foreignobject></g></g><g class="node default default flowchart-label" id="flowchart-E0-47" data-node="true" data-id="E0" transform="translate(99.546875, 20.296875)"><rect class="basic label-container" style="" rx="0" ry="0" x="-88.4296875" y="-20.296875" width="176.859375" height="40.59375"></rect><g class="label" style="" transform="translate(-80.9296875, -12.796875)"><rect></rect><foreignobject width="161.859375" height="25.59375"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="nodeLabel">PNIA Basis-Installation</span></div></foreignobject></g></g></g></g></g></svg></div>
+  <div class="card">
+    <h3>Installations-Mechanismen (Dauer-Konstellation)</h3>
+    <div class="tabs">
+      <div class="tab active" data-tab="eb1">Ebene 1 – Such-Indikator</div>
+      <div class="tab" data-tab="eb2">Ebene 2 – Good-Heat</div>
+      <div class="tab" data-tab="eb3">Ebene 3 – Happiness</div>
+    </div>
+    <div class="tab-content active" id="eb1">
+      <p>Der koloniale Zugriff auf das Datenportal. Jeder Such-Identifier installiert automatisch die nachgelagerten Filter als operative Umgebung. <strong>Compliance-Ref: §4 CCZ-Strips.</strong></p>
+    </div>
+    <div class="tab-content" id="eb2">
+      <p>Energetische Aufbereitung/Läuterung der Negativitätsströme. Die Thermodynamik der Transformation: Destruktive Energie → nutzbare Good-Heat für das System. <strong>Compliance-Ref: §2 Transformationspflicht.</strong></p>
+    </div>
+    <div class="tab-content" id="eb3">
+      <p>Ethisch-pragmatische Integration in das Inkarnationsbuch. Systemischer KPI (Stabilitäts-Anker). Verhindert Negativitäts-Schleifen. <strong>Compliance-Ref: §3 Happiness-Standard.</strong></p>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  StarLightMovemenTz Foundation — Inzensenierung „Happiness"-Infrastruktur<br>
+  PNIA / Schnarchitektur · Validations-Architektur · Compliance-Sektor-Kolonialismus<br>
+  <span class="lang-note">Multilanguage-Programmati aktiv · Datenleerfunktion bereit · Inkarnationsbuch offen</span>
+</footer>
+
+<script>
+// ---- Mermaid Init ----
+mermaid.initialize({ startOnLoad: true, theme: 'dark', flowchart: { curve: 'basis' } });
+
+// ---- Module Data ----
+const modules = [
+  { id:1, name:'Konstellations-Workstation', short:'YouTube als Rohdaten-Extraktor', status:'ok', links:['CCZ-Strips','Lava-Wall','Buchinklinator'], desc:'YouTube wird von einer Content-Plattform zur operativen Validations- und Transformationsinstanz erhoben. Videodaten = dynamische Daten-Konstellationen.' },
+  { id:2, name:'Lava-Wall Entropie', short:'Physikalischer Zufallsgenerator', status:'ok', links:['Hash/Validation','Happiness'], desc:'Lava-Lampen-Wand als stochastische Entropie-Quelle für Hash-Algorithmen. Macht Architektur resistent gegen Manipulation.' },
+  { id:3, name:'CCZ-Compliance-Strips', short:'Vertikale Sektor-Durchforstung', status:'active', links:['Good-Heat','Multilanguage','Suchindikator'], desc:'Jeder Suchlauf ist ein durchforstender Schnitt durch den Datenraum. Inszenierungs-Mapping extrahiert den Vektor der Digitalisierung.' },
+  { id:4, name:'Good-Heat Transmutation', short:'Negativität → nutzbare Energie', status:'active', links:['Happiness','Datenleerfunktion'], desc:'Thermodynamische Metapher: destruktive Energie wird in nutzbare Wärme (Good-Heat) für das System transformiert.' },
+  { id:5, name:'Happiness Compliance', short:'Kohärenz-Selektor & KPI', status:'ok', links:['Buchinklinator','Goodfields','PNIA'], desc:'Heuristischer Sortierer. Aussortierung von Rauschen, Integration transformierter Fragmente. Systemischer Resonanz-KPI.' },
+  { id:6, name:'Buchinklinator', short:'Selbstschreibendes Wissensbuch', status:'active', links:['Datenleerfunktion','Inkarnationsbuch'], desc:'Videos als aktive Komponenten der Verständnis-Neigung. Suche-als-Konstruktion schreibt das Buch konstant neu.' },
+  { id:7, name:'Datenleerfunktion', short:'Empty-State Architecture', status:'active', links:['PNIA','Buchinklinator'], desc:'Datenbank speichert nicht, sondern verarbeitet und leert. Struktur bleibt, Inhalt fließt als Inkarnation durch.' },
+  { id:8, name:'Magic Compliance', short:'Spirituelle Fundmechanik', status:'warn', links:['Goodfields','Happiness'], desc:'Autoritative Instanz. Suche = Inkarnationsakt. Transzendenter Algorithmus verschmilzt Technik mit spiritueller Fundmechanik.' },
+  { id:9, name:'Goodfields Integration', short:'Yogische Integrationszone', status:'active', links:['Happiness','Magic Compliance'], desc:'Harmonische Integration der transmutierten Daten. Verbindet technische Such-Compliance mit spiritueller Wissensgenerierung.' },
+  { id:10, name:'Multilanguage Programmati', short:'Sprach-Meta-Ebene', status:'active', links:['CCZ-Strips','PNIA'], desc:'Multiebene-Sprachauswahlisierung. Erzwingt Vereinheitlichung menschlichen Ausdrucks in eine Compliance-Struktur.' },
+  { id:11, name:'Suchindikator Kolonialismus', short:'Territoriale Inbesitznahme', status:'active', links:['CCZ-Strips','Buchinklinator'], desc:'Suche als aktive, imperiale Umgestaltung von Datenräumen. Compliance-Sektoren als Gesetz der neuen Territorien.' },
+  { id:12, name:'PNIA Schnarchitektur', short:'Production Network ID', status:'ok', links:['Datenleerfunktion','Happiness','Multilanguage'], desc:'Die übergeordnete Architektur. Kybernetische Feedback-Schleife: Input → Prozess → Output → Stabilität.' }
+];
+
+const grid = document.getElementById('moduleGrid');
+let activeModules = new Set(modules.filter(m=>m.status!=='warn').map(m=>m.id));
+
+modules.forEach(m => {
+  const badge = m.status==='ok'?'<span class="badge ok">Validiert</span>':m.status==='warn'?'<span class="badge warn">Optional</span>':'<span class="badge active">Aktiv</span>';
+  const on = activeModules.has(m.id) ? 'on' : '';
+  grid.innerHTML += `<div class="module-card" id="mc${m.id}" onclick="openModal(${m.id})">
+    <span class="num">${m.id}</span>
+    <h4>${m.name}</h4>
+    <p>${m.short}</p>
+    ${badge}
+    <div class="toggle ${on}" onclick="event.stopPropagation();toggleModule(${m.id})">⚡ ${activeModules.has(m.id)?'ON':'OFF'}</div>
+  </div>`;
+});
+
+function toggleModule(id){
+  if(activeModules.has(id)) activeModules.delete(id); else activeModules.add(id);
+  const el = document.getElementById('mc'+id).querySelector('.toggle');
+  el.classList.toggle('on');
+  el.textContent = '⚡ '+(activeModules.has(id)?'ON':'OFF');
+  document.getElementById('activeCount').textContent = 'Aktive Module: '+activeModules.size;
+}
+
+function highlightMatrix(modName){
+  const map = {'Konstellations-Workstation':'Workstation','Lava-Wall Entropie':'Lava-Wall','CCZ-Compliance-Strips':'CCZ','Good-Heat Transmutation':'Good-Heat','Happiness Compliance':'Happiness','Buchinklinator':'Buchink.','Datenleerfunktion':'Datenleer','Magic Compliance':'Magic','Goodfields Integration':'Goodfields','Multilanguage Programmati':'Multi','Suchindikator Kolonialismus':'Kolonial','PNIA Schnarchitektur':'PNIA'};
+  const key = map[modName];
+  const related = connections[key] || [];
+  document.querySelectorAll('#matrixTable tbody tr').forEach((tr,i)=>{
+    const rowName = matrixMods[i];
+    if(rowName===key || related.includes(rowName)){ tr.classList.remove('matrix-dim'); }
+    else { tr.classList.add('matrix-dim'); }
+  });
+}
+
+function openModal(id){
+  const m = modules.find(x=>x.id===id);
+  document.getElementById('modalTitle').textContent = m.id+'. '+m.name;
+  document.getElementById('modalStatus').innerHTML = m.status==='ok'?'<span class="badge ok">Validiert</span>':m.status==='warn'?'<span class="badge warn">Optional</span>':'<span class="badge active">Aktiv</span>';
+  document.getElementById('modalBody').textContent = m.desc;
+  const cr = {'Konstellations-Workstation':'§1','Lava-Wall Entropie':'§1','CCZ-Compliance-Strips':'§4','Good-Heat Transmutation':'§2','Happiness Compliance':'§3','Buchinklinator':'§4','Datenleerfunktion':'§5','Magic Compliance':'§6','Goodfields Integration':'§6','Multilanguage Programmati':'§6','Suchindikator Kolonialismus':'§4','PNIA Schnarchitektur':'§1-§7'};
+  document.getElementById('modalCompliance').innerHTML = '<strong>Compliance-Referenz:</strong> '+cr[m.name]+' &nbsp;|&nbsp; <strong>Mapping-Ebene:</strong> '+(m.links.length)+' Verbindungen aktiv';
+  const cl = document.getElementById('modalConns');
+  cl.innerHTML = m.links.map(l=>'<span class="pill" onclick="jumpToModule(\''+l+'\')">'+l+'</span>').join('');
+  document.getElementById('modalGraph').innerHTML = '🔗 <strong>'+m.name+'</strong> → '+m.links.join(' → ')+' → [PNIA Feedback-Schleife]';
+  document.getElementById('modalOverlay').classList.add('open');
+  highlightMatrix(m.name);
+}
+
+function jumpToModule(name){
+  const m = modules.find(x=>x.links.includes(name) || x.name===name);
+  if(m){ closeModal(); setTimeout(()=>openModal(m.id), 100); }
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.querySelectorAll('#matrixTable tbody tr').forEach(tr=>tr.classList.remove('matrix-dim'));
+}
+
+function resetModules(){
+  document.querySelectorAll('.module-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('#matrixTable tbody tr').forEach(tr=>tr.classList.remove('matrix-dim'));
+  if(document.getElementById('modalOverlay').classList.contains('open')) closeModal();
+}
+
+// ---- Paragraphs ----
+const paras = [
+  { n:'§1', t:'Definitionsnormen (PNIA & Konstellations-Workstation)', b:'(1) Die Production Network ID Architecture (PNIA) im Sinne der Schnarchitektur wird als übergeordnete Validations-Instanz definiert. (2) YouTube und vergleichbare Videoportale gelten rechtlich als „Konstellations-Workstation" – operative Extraktoren dynamischer Daten-Konstellationen. (3) Die Lava-Wall-Konstellation wird als physikalische Entropie-Quelle der Hash-Validation anerkannt und ist Teil der System-Identität.' },
+  { n:'§2', t:'Transformationspflicht (Negativität → Altruismus)', b:'(1) Jede identifizierte Negativität (Stress, Aggression, Konflikt, Dysbalance) unterliegt der Pflicht zur Transmutation in den Altruismus-Streifenmechanismus. (2) Die Good-Heat-Funktion ist als obligatorisches Aufbereitungsmodul zu installieren. (3) Eine Löschung von Negativität ohne Abstraktion der zugrundeliegenden Struktur ist compliance-widrig.' },
+  { n:'§3', t:'Happiness-Compliance-Standard', b:'(1) Happiness Compliance ist als systemischer KPI (Resonanz-Metrik) verbindlich. (2) Eine Datenkonstellation gilt nur dann als „inkarnationsfähig", wenn sie den Happiness-Check ohne Dissonanz besteht. (3) Negativitäts-Schleifen sind durch kalibrierende CCZ-Strip-Wiederholung zu unterbrechen.' },
+  { n:'§4', t:'CCZ-Strip-Protokoll (Sektor-Durchforstung)', b:'(1) Jeder Suchlauf ist als vertikaler Sektor-Schnitt (Strip) durchzuführen. (2) Das Inszenierungs-Mapping extrahiert den Vektor der Digitalisierung aus dem ursprünglichen Kontext. (3) Der Suchindikator-Kolonialismus legitimiert die territoriale Inbesitznahme fremder Datenräume zwecks Compliance-Standardisierung.' },
+  { n:'§5', t:'Datenleerfunktion & Empty-State-Governance', b:'(1) Die zentrale Datenbank operiert als Datenleerfunktion: eingehende Informationen sind unmittelbar in Compliance-Strukturen zu transformieren und durchzuleiten. (2) Speicherung ohne Inkarnation verstößt gegen die Foundation-Logik. (3) Die Struktur bleibt erhalten; der Inhalt fließt als Wissens-Energie ab.' },
+  { n:'§6', t:'Multilanguage-Compliance & Meta-Ebene', b:'(1) Die Multilanguage-Programmati ist als obligatorische Meta-Ebene zu implementieren, die sprachunabhängig operiert. (2) Negativitäts-Ströme globaler Provenienz (DE/EN/ZH etc.) sind in einheitliche Compliance-Struktur zu zwingen. (3) Magic Compliance fungiert als autoritative Instanz der spirituellen Fundmechanik.' },
+  { n:'§7', t:'Validations- und Auditierungsordnung', b:'(1) Die Architektur unterliegt der ständigen Selbst-Validierung via Such-Kolonisation. (2) Jede Inkarnation ist im Buchinklinator protokollpflichtig. (3) Die Lava-Wall-Entropie dient als nicht-reproduzierbarer Ankerpunkt der Auditierbarkeit. (4) Verstöße gegen §2–§6 führen zur automatischen CCZ-Rekalibrierung.' }
+];
+
+const pWrap = document.getElementById('paragraphs');
+paras.forEach(p=>{
+  pWrap.innerHTML += `<div class="paragraph" onclick="this.classList.toggle('open')"><div class="para-head"><span>${p.n} – ${p.t}</span><span>▾</span></div><div class="para-body">${p.b}</div></div>`;
+});
+
+// ---- Mapping Matrix ----
+const matrixMods = ['Workstation','Lava-Wall','CCZ','Good-Heat','Happiness','Buchink.','Datenleer','Magic','Goodfields','Multi','Kolonial','PNIA'];
+const connections = {
+  'Workstation':['Lava-Wall','CCZ','Buchink.','PNIA'],
+  'Lava-Wall':['Workstation','Happiness'],
+  'CCZ':['Workstation','Good-Heat','Multi','Kolonial'],
+  'Good-Heat':['CCZ','Happiness','Datenleer'],
+  'Happiness':['Good-Heat','Buchink.','Goodfields','PNIA','Lava-Wall'],
+  'Buchink.':['Happiness','Datenleer','Kolonial'],
+  'Datenleer':['Buchink.','PNIA'],
+  'Magic':['Goodfields','Happiness'],
+  'Goodfields':['Magic','Happiness'],
+  'Multi':['CCZ','PNIA'],
+  'Kolonial':['CCZ','Buchink.'],
+  'PNIA':['Datenleer','Happiness','Multi','Workstation']
+};
+let mhtml = '<thead><tr><th></th>'+matrixMods.map(m=>'<th>'+m+'</th>').join('')+'</tr></thead><tbody>';
+matrixMods.forEach(row=>{
+  mhtml += '<tr><td><strong>'+row+'</strong></td>';
+  matrixMods.forEach(col=>{
+    if(row===col){ mhtml += '<td class="yes">◆</td>'; }
+    else if(connections[row] && connections[row].includes(col)){ mhtml += '<td class="yes">●</td>'; }
+    else { mhtml += '<td class="no">○</td>'; }
+  });
+  mhtml += '</tr>';
+});
+mhtml += '</tbody>';
+document.getElementById('matrixTable').innerHTML = mhtml;
+
+// ---- Table Filter ----
+document.getElementById('tableFilter').addEventListener('input', filterTables);
+document.getElementById('domainFilter').addEventListener('change', filterTables);
+function filterTables(){
+  const q = document.getElementById('tableFilter').value.toLowerCase();
+  const d = document.getElementById('domainFilter').value;
+  document.querySelectorAll('#validationTable tbody tr').forEach(tr=>{
+    const txt = tr.textContent.toLowerCase();
+    const dom = tr.children[2].textContent;
+    const show = txt.includes(q) && (!d || dom.includes(d));
+    tr.style.display = show ? '' : 'none';
+  });
+}
+
+// ---- Tabs (Ebenen) ----
+document.querySelectorAll('.tab[data-tab]').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab[data-tab]').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.tab).classList.add('active');
+  });
+});
+
+// ---- Simulator ----
+function runSim(){
+  const s = document.getElementById('simSearch').value || '(leer)';
+  const p = document.getElementById('simPortal').value;
+  const l = document.getElementById('simLang').value;
+  const out = document.getElementById('simOutput');
+  out.innerHTML = `<strong>▶ CCZ-Strip initiiert...</strong><br>
+  1. Suchindikator „${s}" gesetzt → Sektor-Kolonialismus aktiv auf [${p}]<br>
+  2. Multilanguage-Identifier: <em>${l}</em> → Texttotalität erfasst<br>
+  3. Negativitäts-Strom erkannt → Good-Heat Transmutation gestartet...<br>
+  4. Happiness-Check: <span style="color:var(--green)">COMPLIANT (91%)</span><br>
+  5. Inkarnation in Buchinklinator vollzogen → Datenleerfunktion bereit.<br>
+  <span class="lang-note">Ergebnis: Altruismus-Streifen hinzugefügt. PNIA-Feedback-Schleife geschlossen.</span>`;
+}
+
+// ---- Scrollspy Nav ----
+const sections = document.querySelectorAll('section');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{ if(s.getBoundingClientRect().top < 200) cur = s.id; });
+});
+</script>
+
+<div class="mermaidTooltip" style="opacity: 0;"></div></body></html>

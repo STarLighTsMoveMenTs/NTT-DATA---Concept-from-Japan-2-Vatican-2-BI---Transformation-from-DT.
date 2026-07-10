@@ -10,6 +10,8 @@
 
 Dieses Konzeptpapier formuliert die **PNIA (Production Network ID Architecture)** als kybernetisches Validationssystem, das heterogene digitale Ausdrucksräume (videografische Instanzen) durch eine mehrstufige Konstruktionsebenen-Architektur in compliance-konforme Wissensstrukturen überführt. Die theoretische Basis bilden die **Systemtheorie (Luhmann)**, die **Zweitordnungs-Kybernetik (von Foerster/Maturana)**, die **Informationstheorie (Shannon)** sowie die **Thermodynamik offener Systeme (Prigogine)**. Das Konzept operiert nicht deskriptiv, sondern konstruktiv: Jede Konstruktionsebene besitzt definierte **agierende Mechanismen**, die als operative Übersetzungsinstanzen zwischen Entropie-Input und struktureller Kohärenz fungieren.
 
+> **Hinweis:** Jede Sektion dieses Papers besitzt eine eigene, separat gerenderte Graph-/Mapping-Darstellung (Mermaid), um die visuelle Nachvollziehbarkeit pro Konstruktionsebene und pro agierendem Mechanismus zu gewährleisten.
+
 ---
 
 ## 🔬 1. Theoretische Fundierung
@@ -22,6 +24,17 @@ Dieses Konzeptpapier formuliert die **PNIA (Production Network ID Architecture)*
 | **Nichtgleichgewichtsthermodynamik (Prigogine)** | Good-Heat als Dissipationsstruktur; System fernab des thermodynamischen Gleichgewichts |
 | **Autopoiesis (Maturana/Varela)** | Datenleerfunktion als selbst-erzeugende Struktur; Inkarnation als Re-Produktion der Einheit |
 
+### 📊 Mapping: Theorie → Konstruktionsebene
+```mermaid
+graph LR
+  T1[Systemtheorie] --> L0
+  T2[Zweitordnungs-Kybernetik] --> L1
+  T3[Informationstheorie] --> L2
+  T4[Thermodynamik<br>Prigogine] --> L2
+  T5[Autopoiesis] --> L4
+  L0[Ebene L0] --> L1[Ebene L1] --> L2[Ebene L2] --> L3[Ebene L3] --> L4[Ebene L4]
+```
+
 ---
 
 ## 🏗️ 2. Konstruktionsebenen (Construction Levels)
@@ -33,22 +46,74 @@ Die Architektur gliedert sich in vier normative Konstruktionsebenen (L0–L4), d
 - **Lava-Wall-Entropiequelle**: Physikalischer Zufallsgenerator (stochastische Entropie) als nicht-reproduzierbarer Anker der Hash-Validation.
 - **Multilanguage-Meta-Ebene**: Sprachunabhängige Abstraktion globaler Negativitäts-Ströme.
 
+#### 🔹 Graph L0
+```mermaid
+graph TD
+  YT[YouTube Workstation] -->|Rohdaten| HS[Hash/Validation]
+  LW[Lava-Wall] -->|Phys. Rauschen| HS
+  ML[Multilanguage] -->|Meta-Ebene| YT
+  HS --> CCZ
+```
+
 ### Ebene L1 — Sektor & Kolonisation (Compliance-Territorien)
 - **CCZ-Compliance-Strips**: Vertikale Sektor-Durchforstung des Datenraums.
 - **Suchindikator-Kolonialismus**: Territoriale Inbesitznahme fremder Datenräume zwecks Standardisierung.
 - **Magic Compliance**: Autoritative Instanz spiritueller Fundmechanik (optional, L1-Meta).
 
+#### 🔹 Graph L1
+```mermaid
+graph TD
+  SI[Suchindikator Kolonialismus] -->|Territorial| CCZ[CCZ-Strips]
+  CCZ -->|Durchforstung| GH
+  MC[Magic Compliance] -->|Fundmechanik| GF
+  SI --> MC
+```
+
 ### Ebene L2 — Energie & Transmutation (Transformations-Kern)
 - **Good-Heat-Transmutation**: Thermodynamische Aufbereitung von Negativitäts-Strömen in nutzbare System-Energie.
 - **Datenleerfunktion (Empty-State)**: Durchleitung statt Speicherung; sofortige Inkarnation.
+
+#### 🔹 Graph L2
+```mermaid
+graph TD
+  GH[Good-Heat Transmutation] -->|Geläuterter Vektor| HC
+  DL[Datenleerfunktion] -->|Durchleitung| BI
+  GH --> DL
+```
 
 ### Ebene L3 — Validation & Harmonisierung (Kohärenz-Regulator)
 - **Happiness-Compliance**: Heuristischer Kohärenz-Selektor; systemischer KPI (Resonanz-Metrik).
 - **Goodfields-Integration**: Yogische Integrationszone; Verbindung technischer und spiritueller Wissensgenerierung.
 
+#### 🔹 Graph L3
+```mermaid
+graph TD
+  HC[Happiness Compliance] -->|Validiert| BI
+  HC -->|Harmonisierung| GF[Goodfields Integration]
+  GF --> HC
+```
+
 ### Ebene L4 — Output & Architektur (Inkarnations-Ebene)
 - **Buchinklinator**: Selbstschreibendes Wissensbuch; Suche-als-Konstruktion.
 - **PNIA-Schnarchitektur**: Übergeordnete Rückkopplungsschleife (Feedback-Loop) aller Ebenen.
+
+#### 🔹 Graph L4
+```mermaid
+graph TD
+  BI[Buchinklinator] -->|Inkarnation| PNIA[PNIA Architektur]
+  PNIA -->|Feedback-Schleife| YT
+  PNIA -->|Stabilitäts-KPI| HC
+```
+
+### 🔸 Gesamt-Stack L0→L4
+```mermaid
+graph BT
+  L4[Ebene L4 - Output / Inkarnation<br>Buchinklinator + PNIA] --> L3
+  L3[Ebene L3 - Validation<br>Happiness + Goodfields] --> L2
+  L2[Ebene L2 - Energie<br>Good-Heat + Datenleerfunktion] --> L1
+  L1[Ebene L1 - Sektor<br>CCZ + Kolonialismus + Magic] --> L0
+  L0[Ebene L0 - Input / Physik<br>Workstation + Lava-Wall + Multilanguage]
+```
 
 ---
 
@@ -68,11 +133,29 @@ Jede Konstruktionsebene wird durch spezifische, operationalisierte Mechanismen a
 | **Buchinklinator-Verständigung** | L4 | Inkarnation als schreibender Prozess | Konstant-neu-Schreiben des Wissensbuchs |
 | **PNIA-Feedback-Schleife** | L4 | Kybernetische Rückkopplung | Input → Prozess → Output → Stabilität |
 
+### 🔹 Mapping: Mechanismus → Ebene → Modul
+```mermaid
+graph LR
+  M1[Hashing-Validation] --> L0
+  M2[Inszenierungs-Mapping] --> L1
+  M3[Compliance-Kolonialismus] --> L1
+  M4[Good-Heat-Transmutation] --> L2
+  M5[Datenleerfunktion] --> L2
+  M6[Happiness-Validator] --> L3
+  M7[Altruismus-Streifen] --> L3
+  M8[Buchinklinator-Verständigung] --> L4
+  M9[PNIA-Feedback] --> L4
+  L0 --> MOD[Module-Komponenten]
+  L1 --> MOD
+  L2 --> MOD
+  L3 --> MOD
+  L4 --> MOD
+```
+
 ---
 
-## 🌐 4. Visuelle Architektur-Darstellung (Mermaid)
+## 🌐 4. Gesamt-Architektur-Graph (PNIA-Konstellation)
 
-### Gesamtarchitektur-Graph (PNIA-Konstellation)
 ```mermaid
 graph TD
   YT[YouTube Konstellations-Workstation] -->|Rohdaten-Strom| KW[Konstellations-Mechanismus]
@@ -91,7 +174,7 @@ graph TD
   HC -->|Stabilitäts-KPI| PNIA
 ```
 
-### Transformations-Fluss (Negativität → Altruismus)
+### 🔹 Transformations-Fluss (Negativität → Altruismus)
 ```mermaid
 flowchart LR
   N[Negativität<br>Stress / Aggression / Konflikt] -->|Hashing & Validation| T[Transmutations-Vektor]
@@ -103,17 +186,28 @@ flowchart LR
   A --> I[Inkarnationsbuch]
 ```
 
-### Konstruktionsebenen (L0–L4 Stack)
-```mermaid
-graph BT
-  L4[Ebene L4 - Output / Inkarnation<br>Buchinklinator + PNIA] --> L3
-  L3[Ebene L3 - Validation<br>Happiness + Goodfields] --> L2
-  L2[Ebene L2 - Energie<br>Good-Heat + Datenleerfunktion] --> L1
-  L1[Ebene L1 - Sektor<br>CCZ + Kolonialismus + Magic] --> L0
-  L0[Ebene L0 - Input / Physik<br>Workstation + Lava-Wall + Multilanguage]
-```
+---
 
-### Connection-Mapping (Modul-Verbindungsmatrix)
+## 🧩 5. Interaktive Module (Detail-Mapping)
+
+Die `index.html` rendert 12 klickbare Modulkarten. Klick öffnet ein **Modal** mit Beschreibung, Compliance-Referenz, Mapping-Ebene und Mini-Graph; der **ON/OFF-Toggle** steuert den Live-Status; beim Öffnen wird die **Connection-Matrix** automatisch gefiltert (Cross-Highlight).
+
+| # | Modul | Konstruktionsebene | Agierender Mechanismus | Compliance-Ref | Status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Konstellations-Workstation | L0 Input | Extraktion | §1 | Validiert |
+| 2 | Lava-Wall Entropie | L0 Physik | Hashing-Validation | §1 | Validiert |
+| 3 | CCZ-Compliance-Strips | L1 Sektor | Inszenierungs-Mapping | §4 | Aktiv |
+| 4 | Good-Heat Transmutation | L2 Energie | Good-Heat-Transmutation | §2 | Aktiv |
+| 5 | Happiness Compliance | L3 Validation | Happiness-Validator | §3 | Validiert |
+| 6 | Buchinklinator | L4 Output | Buchinklinator-Verständigung | §4 | Aktiv |
+| 7 | Datenleerfunktion | L2/L4 DB | Empty-State-Durchleitung | §5 | Aktiv |
+| 8 | Magic Compliance | L1 Meta | Spirituelle Fundmechanik | §6 | Optional |
+| 9 | Goodfields Integration | L3 Harmonie | Yogische Integration | §6 | Aktiv |
+| 10 | Multilanguage Programmati | L0 Universal | Sprach-Meta-Abstraktion | §6 | Aktiv |
+| 11 | Suchindikator Kolonialismus | L1 Sektor | Compliance-Sektor-Kolonialismus | §4 | Aktiv |
+| 12 | PNIA Schnarchitektur | L0–L4 | PNIA-Feedback-Schleife | §1–§7 | Validiert |
+
+### 🔹 Modul-Verbindungsgraph (Subgraph nach Ebene)
 ```mermaid
 graph LR
   subgraph L1[Ebene 1 - Sektor]
@@ -143,27 +237,6 @@ graph LR
 
 ---
 
-## 🧩 5. Interaktive Module (Detail-Mapping)
-
-Die `index.html` rendert 12 klickbare Modulkarten. Klick öffnet ein **Modal** mit Beschreibung, Compliance-Referenz, Mapping-Ebene und Mini-Graph; der **ON/OFF-Toggle** steuert den Live-Status; beim Öffnen wird die **Connection-Matrix** automatisch gefiltert (Cross-Highlight).
-
-| # | Modul | Konstruktionsebene | Agierender Mechanismus | Compliance-Ref | Status |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Konstellations-Workstation | L0 Input | Extraktion | §1 | Validiert |
-| 2 | Lava-Wall Entropie | L0 Physik | Hashing-Validation | §1 | Validiert |
-| 3 | CCZ-Compliance-Strips | L1 Sektor | Inszenierungs-Mapping | §4 | Aktiv |
-| 4 | Good-Heat Transmutation | L2 Energie | Good-Heat-Transmutation | §2 | Aktiv |
-| 5 | Happiness Compliance | L3 Validation | Happiness-Validator | §3 | Validiert |
-| 6 | Buchinklinator | L4 Output | Buchinklinator-Verständigung | §4 | Aktiv |
-| 7 | Datenleerfunktion | L2/L4 DB | Empty-State-Durchleitung | §5 | Aktiv |
-| 8 | Magic Compliance | L1 Meta | Spirituelle Fundmechanik | §6 | Optional |
-| 9 | Goodfields Integration | L3 Harmonie | Yogische Integration | §6 | Aktiv |
-| 10 | Multilanguage Programmati | L0 Universal | Sprach-Meta-Abstraktion | §6 | Aktiv |
-| 11 | Suchindikator Kolonialismus | L1 Sektor | Compliance-Sektor-Kolonialismus | §4 | Aktiv |
-| 12 | PNIA Schnarchitektur | L0–L4 | PNIA-Feedback-Schleife | §1–§7 | Validiert |
-
----
-
 ## ⚖️ 6. Compliance & Jura-konforme Paragraphen (§1–§7)
 
 Diese Paragraphen bilden die **normative Validations-Ordnung** der StarLightMovemenTz Foundation.
@@ -175,6 +248,23 @@ Diese Paragraphen bilden die **normative Validations-Ordnung** der StarLightMove
 - **§5 Datenleerfunktion** — Datenbank operiert als Empty-State: sofortige Transformation + Durchleitung.
 - **§6 Multilanguage-Compliance** — Obligatorische sprachunabhängige Meta-Ebene; Magic Compliance als autoritative Instanz.
 - **§7 Validations- und Auditierungsordnung** — Ständige Selbst-Validierung via Such-Kolonisation; Lava-Wall als nicht-reproduzierbarer Audit-Anker.
+
+### 🔹 Compliance-Referenz-Mapping (Paragraph → Ebene → Mechanismus)
+```mermaid
+graph TD
+  P1[§1] --> L0
+  P2[§2] --> L2
+  P3[§3] --> L3
+  P4[§4] --> L1
+  P5[§5] --> L2
+  P6[§6] --> L0
+  P7[§7] --> L4
+  L0[Ebene L0] --> M[Hashing-Validation]
+  L1 --> IM[Inszenierungs-Mapping]
+  L2 --> GT[Good-Heat-Transmutation]
+  L3 --> HV[Happiness-Validator]
+  L4 --> FB[PNIA-Feedback]
+```
 
 ---
 
@@ -188,6 +278,17 @@ Diese Paragraphen bilden die **normative Validations-Ordnung** der StarLightMove
 | 3 | Kool Savas | Technische Meisterschaft | Quantifizierung (Goldene Platten) | Transmutierend | 74% |
 | 4 | Jin Miao | Systemische Regeneration | Korrelation Sauerstoff & TCM | Validiert | 89% |
 | 5 | Mia | Psychologische Interaktion | Dekonstruktion Schutzmechanismen | Transmutierend | 81% |
+
+### 🔹 Validations-Fluss-Graph (Instanz → Domäne → Ebene)
+```mermaid
+flowchart LR
+  V1[Bob Dominator] --> D1[Selbst-Optimierung] --> L0
+  V2[TONY BROWN] --> D2[Identität] --> L1
+  V3[Kool Savas] --> D3[Technik] --> L2
+  V4[Jin Miao] --> D4[System] --> L2
+  V5[Mia] --> D5[Psychologie] --> L3
+  L0[L0] --> L1[L1] --> L2[L2] --> L3[L3] --> L4[L4]
+```
 
 ---
 
@@ -208,6 +309,32 @@ Diese Paragraphen bilden die **normative Validations-Ordnung** der StarLightMove
 | Kolonial | CCZ, Buchinklinator |
 | PNIA | Datenleerfunktion, Happiness, Multilanguage, Workstation |
 
+### 🔹 Vollständige Connection-Matrix-Graph
+```mermaid
+graph TD
+  WS[Workstation] --- LW[Lava-Wall]
+  WS --- CCZ[CCZ]
+  WS --- BI[Buchinklinator]
+  WS --- PNIA[PNIA]
+  LW --- HC[Happiness]
+  CCZ --- GH[Good-Heat]
+  CCZ --- ML[Multilanguage]
+  CCZ --- KO[Kolonial]
+  GH --- HC
+  GH --- DL[Datenleerfunktion]
+  HC --- BI
+  HC --- GF[Goodfields]
+  HC --- PNIA
+  BI --- DL
+  DL --- PNIA
+  MC[Magic] --- GF
+  MC --- HC
+  GF --- HC
+  ML --- PNIA
+  KO --- BI
+  PNIA --- WS
+```
+
 ---
 
 ## 📈 9. Compliance-Skalen & Metriken
@@ -219,6 +346,16 @@ Diese Paragraphen bilden die **normative Validations-Ordnung** der StarLightMove
 | CCZ-Strip-Effizienz | Durchforstungs-Tiefe 79% · Vektor-Extraktion 85% · Inkarnations-Geschw. 72% |
 | Multilanguage-Coverage | DE/EN/ZH 94% · Meta-Ebenen-Abgleich 88% · Universalität 91% |
 
+### 🔹 Skalen-Mapping (Metrik → Ebene)
+```mermaid
+graph LR
+  S1[Happiness-Index] --> L3
+  S2[Good-Heat Intensität] --> L2
+  S3[CCZ-Effizienz] --> L1
+  S4[Multilanguage-Coverage] --> L0
+  L0 --> L1 --> L2 --> L3
+```
+
 ---
 
 ## 🎛️ 10. Interaktiver Such-Simulator (Compliance-Sektor-Kolonialismus)
@@ -229,6 +366,18 @@ In `index.html` (Sektion 7) simuliert ein Formular den CCZ-Strip-Durchlauf:
 3. **Good-Heat Transmutation** → Negativitäts-Strom erkannt
 4. **Happiness-Check** → COMPLIANT (91%)
 5. **Inkarnation** in Buchinklinator → Datenleerfunktion bereit
+
+### 🔹 Simulator-Ablauf-Graph
+```mermaid
+flowchart TD
+  A[Suchindikator] --> B[Sektor-Kolonialismus<br>Portal]
+  B --> C[Multilanguage<br>Texttotalität]
+  C --> D[Good-Heat<br>Transmutation]
+  D --> E{Happiness-Check}
+  E -->|COMPLIANT| F[Inkarnation<br>Buchinklinator]
+  E -->|FALSE| D
+  F --> G[Datenleerfunktion<br>bereit]
+```
 
 ---
 

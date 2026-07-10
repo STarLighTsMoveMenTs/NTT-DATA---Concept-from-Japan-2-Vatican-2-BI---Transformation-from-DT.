@@ -381,6 +381,323 @@ flowchart TD
 
 ---
 
+## 🗂️ 12. Space Overview Mode (Mermaid-Tabellen pro Thema)
+
+Dieser Modus fasst jedes Thema des Konzepts als eigene **Mermaid-Entity-Tabelle** (ER-Diagramm) zusammen — eine strukturierte "Space Overview" für schnelle Navigation.
+
+### 🔬 Tabelle 1 — Theoretische Fundierung
+```mermaid
+erDiagram
+  THEORIE {
+    string Name "Systemtheorie Luhmann"
+    string Anwendung "Operative Geschlossenheit PNIA"
+  }
+  THEORIE {
+    string Name "Zweitordnungs-Kybernetik"
+    string Anwendung "Inszenierung = Selbst-Beobachtung"
+  }
+  THEORIE {
+    string Name "Informationstheorie Shannon"
+    string Anwendung "Negativität = Rauschen"
+  }
+  THEORIE {
+    string Name "Thermodynamik Prigogine"
+    string Anwendung "Good-Heat Dissipationsstruktur"
+  }
+  THEORIE {
+    string Name "Autopoiesis Maturana"
+    string Anwendung "Datenleerfunktion selbst-erzeugend"
+  }
+```
+
+### 🏗️ Tabelle 2 — Konstruktionsebenen (L0–L4)
+```mermaid
+erDiagram
+  LEVEL {
+    string ID "L0"
+    string Name "Input & Physik"
+    string Module "Workstation, Lava-Wall, Multilanguage"
+  }
+  LEVEL {
+    string ID "L1"
+    string Name "Sektor & Kolonisation"
+    string Module "CCZ, Kolonialismus, Magic"
+  }
+  LEVEL {
+    string ID "L2"
+    string Name "Energie & Transmutation"
+    string Module "Good-Heat, Datenleerfunktion"
+  }
+  LEVEL {
+    string ID "L3"
+    string Name "Validation & Harmonisierung"
+    string Module "Happiness, Goodfields"
+  }
+  LEVEL {
+    string ID "L4"
+    string Name "Output & Architektur"
+    string Module "Buchinklinator, PNIA"
+  }
+```
+
+### ⚙️ Tabelle 3 — Agierende Mechanismen
+```mermaid
+erDiagram
+  MECHANISMUS {
+    string Name "Hashing-Validation"
+    string Ebene "L0"
+    string Wirkweise "Physikalisch-digitale Brücke"
+  }
+  MECHANISMUS {
+    string Name "Inszenierungs-Mapping"
+    string Ebene "L1"
+    string Wirkweise "Dekontextualisierung"
+  }
+  MECHANISMUS {
+    string Name "Compliance-Kolonialismus"
+    string Ebene "L1"
+    string Wirkweise "Territoriale Inbesitznahme"
+  }
+  MECHANISMUS {
+    string Name "Good-Heat-Transmutation"
+    string Ebene "L2"
+    string Wirkweise "Dissipationsstruktur"
+  }
+  MECHANISMUS {
+    string Name "Happiness-Validator"
+    string Ebene "L3"
+    string Wirkweise "Binäre Schwellwert-Entscheidung"
+  }
+  MECHANISMUS {
+    string Name "PNIA-Feedback"
+    string Ebene "L4"
+    string Wirkweise "Kybernetische Rückkopplung"
+  }
+```
+
+### 🌐 Tabelle 4 — Architektur-Knoten
+```mermaid
+erDiagram
+  KNOTEN {
+    string Name "Konstellations-Workstation"
+    string Rolle "Input-Extraktion"
+  }
+  KNOTEN {
+    string Name "Lava-Wall"
+    string Rolle "Entropie-Quelle"
+  }
+  KNOTEN {
+    string Name "CCZ-Strips"
+    string Rolle "Sektor-Durchforstung"
+  }
+  KNOTEN {
+    string Name "Good-Heat"
+    string Rolle "Transmutation"
+  }
+  KNOTEN {
+    string Name "Happiness"
+    string Rolle "Kohärenz-Validator"
+  }
+  KNOTEN {
+    string Name "PNIA"
+    string Rolle "Feedback-Architektur"
+  }
+```
+
+### 🧩 Tabelle 5 — Interaktive Module
+```mermaid
+erDiagram
+  MODUL {
+    int NR "1"
+    string Name "Konstellations-Workstation"
+    string Ebene "L0"
+    string Status "Validiert"
+  }
+  MODUL {
+    int NR "3"
+    string Name "CCZ-Compliance-Strips"
+    string Ebene "L1"
+    string Status "Aktiv"
+  }
+  MODUL {
+    int NR "4"
+    string Name "Good-Heat Transmutation"
+    string Ebene "L2"
+    string Status "Aktiv"
+  }
+  MODUL {
+    int NR "5"
+    string Name "Happiness Compliance"
+    string Ebene "L3"
+    string Status "Validiert"
+  }
+  MODUL {
+    int NR "6"
+    string Name "Buchinklinator"
+    string Ebene "L4"
+    string Status "Aktiv"
+  }
+  MODUL {
+    int NR "12"
+    string Name "PNIA Schnarchitektur"
+    string Ebene "L0-L4"
+    string Status "Validiert"
+  }
+```
+
+### ⚖️ Tabelle 6 — Compliance-Paragraphen
+```mermaid
+erDiagram
+  PARAGRAPH {
+    string Nr "§1"
+    string Thema "Definitionsnormen"
+    string Ebene "L0"
+  }
+  PARAGRAPH {
+    string Nr "§2"
+    string Thema "Transformationspflicht"
+    string Ebene "L2"
+  }
+  PARAGRAPH {
+    string Nr "§3"
+    string Thema "Happiness-Standard"
+    string Ebene "L3"
+  }
+  PARAGRAPH {
+    string Nr "§4"
+    string Thema "CCZ-Strip-Protokoll"
+    string Ebene "L1"
+  }
+  PARAGRAPH {
+    string Nr "§5"
+    string Thema "Datenleerfunktion"
+    string Ebene "L2"
+  }
+  PARAGRAPH {
+    string Nr "§6"
+    string Thema "Multilanguage-Compliance"
+    string Ebene "L0"
+  }
+  PARAGRAPH {
+    string Nr "§7"
+    string Thema "Auditierungsordnung"
+    string Ebene "L4"
+  }
+```
+
+### 📊 Tabelle 7 — Validations-Instanzen
+```mermaid
+erDiagram
+  VIDEO_INSTANZ {
+    int NR "1"
+    string Name "Bob Dominator"
+    string Domäne "Selbst-Optimierung"
+    string Skala "87%"
+  }
+  VIDEO_INSTANZ {
+    int NR "2"
+    string Name "TONY BROWN"
+    string Domäne "Identitäts-Performance"
+    string Skala "92%"
+  }
+  VIDEO_INSTANZ {
+    int NR "3"
+    string Name "Kool Savas"
+    string Domäne "Technische Meisterschaft"
+    string Skala "74%"
+  }
+  VIDEO_INSTANZ {
+    int NR "4"
+    string Name "Jin Miao"
+    string Domäne "Systemische Regeneration"
+    string Skala "89%"
+  }
+  VIDEO_INSTANZ {
+    int NR "5"
+    string Name "Mia"
+    string Domäne "Psychologische Interaktion"
+    string Skala "81%"
+  }
+```
+
+### 🔗 Tabelle 8 — Connection-Mapping (Kanten)
+```mermaid
+erDiagram
+  VERBINDUNG {
+    string Von "Workstation"
+    string Nach "Lava-Wall, CCZ, Buchinklinator, PNIA"
+  }
+  VERBINDUNG {
+    string Von "CCZ-Strips"
+    string Nach "Workstation, Good-Heat, Multilanguage, Kolonial"
+  }
+  VERBINDUNG {
+    string Von "Good-Heat"
+    string Nach "CCZ, Happiness, Datenleerfunktion"
+  }
+  VERBINDUNG {
+    string Von "Happiness"
+    string Nach "Good-Heat, Buchinklinator, Goodfields, PNIA, Lava-Wall"
+  }
+  VERBINDUNG {
+    string Von "PNIA"
+    string Nach "Datenleerfunktion, Happiness, Multilanguage, Workstation"
+  }
+```
+
+### 📈 Tabelle 9 — Compliance-Skalen
+```mermaid
+erDiagram
+  METRIK {
+    string Gruppe "Happiness-Index"
+    string Werte "Resonanz 91%, Abstraktion 84%, Dissonanz 88%"
+  }
+  METRIK {
+    string Gruppe "Good-Heat Intensität"
+    string Werte "Aufnahme 76%, Effizienz 83%, Stabilität 90%"
+  }
+  METRIK {
+    string Gruppe "CCZ-Effizienz"
+    string Werte "Tiefe 79%, Extraktion 85%, Inkarnation 72%"
+  }
+  METRIK {
+    string Gruppe "Multilanguage-Coverage"
+    string Werte "DE/EN/ZH 94%, Abgleich 88%, Universalität 91%"
+  }
+```
+
+### 🎛️ Tabelle 10 — Such-Simulator (CCZ-Strip)
+```mermaid
+erDiagram
+  CCZ_STRIP {
+    int Schritt "1"
+    string Aktion "Suchindikator"
+    string Ergebnis "Sektor-Kolonialismus aktiv"
+  }
+  CCZ_STRIP {
+    int Schritt "2"
+    string Aktion "Multilanguage-ID"
+    string Ergebnis "Texttotalität erfasst"
+  }
+  CCZ_STRIP {
+    int Schritt "3"
+    string Aktion "Good-Heat"
+    string Ergebnis "Negativitäts-Strom transmutiert"
+  }
+  CCZ_STRIP {
+    int Schritt "4"
+    string Aktion "Happiness-Check"
+    string Ergebnis "COMPLIANT 91%"
+  }
+  CCZ_STRIP {
+    int Schritt "5"
+    string Aktion "Inkarnation"
+    string Ergebnis "Datenleerfunktion bereit"
+  }
+```
+
+---
+
 ## 📜 11. Originale Konzept-Grundlage (Archiv)
 
 Die ursprüngliche, dialogisch entwickelte Konzept-Grundlage (Bukination-Compliance, Inszenierung als Validation-Theater, Short-Script) bleibt als archivierter Kontext im Repo unter `Inzensenierung - „Happiness“-Infrastruktur` erhalten. Das vorliegende Dokument stellt die wissenschaftlich fundierte Überarbeitung dar.

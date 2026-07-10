@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inzensenierung – Happiness-Infrastruktur | Interaktive Validations-Architektur</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg-2: #121829;
+    --card: #1a2138;
+    --accent: #6c5ce7;
+    --accent-2: #00cec9;
+    --gold: #fdcb6e;
+    --green: #00b894;
+    --red: #e17055;
+    --text: #dfe6e9;
+    --muted: #8395a7;
+    --border: #2d3548;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding-bottom: 4rem;
+  }
+  header {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+  header p { opacity: 0.9; margin-top: 0.5rem; font-size: 0.95rem; }
+  nav {
+    background: var(--bg-2);
+    padding: 0.75rem 1rem;
+    position: sticky;
+    top: 110px;
+    z-index: 99;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
+  }
+  nav a {
+    color: var(--text);
+    text-decoration: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  nav a:hover { background: var(--accent); color: #fff; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+  section { margin-bottom: 4rem; scroll-margin-top: 160px; }
+  section h2 {
+    font-size: 1.5rem;
+    color: var(--accent-2);
+    border-left: 4px solid var(--accent);
+    padding-left: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  section h3 { font-size: 1.1rem; color: var(--gold); margin: 1.5rem 0 0.8rem; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .grid { display: grid; gap: 1rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .module-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .module-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .module-card .num {
+    position: absolute; top: 0.5rem; right: 0.8rem;
+    font-size: 2.5rem; font-weight: 800; opacity: 0.08;
+  }
+  .module-card h4 { color: var(--accent-2); font-size: 1rem; margin-bottom: 0.4rem; }
+  .module-card p { font-size: 0.82rem; color: var(--muted); }
+  .module-card.selected { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
+  .module-card .toggle {
+    position: absolute; bottom: 0.6rem; right: 0.8rem; font-size: 0.65rem;
+    padding: 0.15rem 0.5rem; border-radius: 8px; background: var(--bg); cursor: pointer;
+    border: 1px solid var(--border); color: var(--muted);
+  }
+  .module-card .toggle.on { background: var(--green); color: #fff; border-color: var(--green); }
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none;
+    z-index: 1000; align-items: center; justify-content: center; padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card); border: 1px solid var(--accent); border-radius: 16px;
+    max-width: 600px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 2rem;
+  }
+  .modal h3 { color: var(--gold); margin-bottom: 0.8rem; }
+  .modal .conn-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1rem 0; }
+  .modal .conn-list .pill { cursor: pointer; }
+  .modal .conn-list .pill:hover { background: var(--accent); color: #fff; }
+  .modal .mini-graph { background: var(--bg-2); border-radius: 10px; padding: 1rem; margin-top: 1rem; }
+  .modal-close { float: right; cursor: pointer; color: var(--muted); font-size: 1.4rem; }
+  .live-status { font-size: 0.78rem; padding: 0.3rem 0.7rem; border-radius: 8px; background: var(--bg-2); }
+  .matrix-dim { opacity: 0.25; }
+  .badge {
+    display: inline-block; font-size: 0.68rem; padding: 0.15rem 0.5rem;
+    border-radius: 10px; margin-top: 0.6rem; font-weight: 600;
+  }
+  .badge.ok { background: rgba(0,184,148,0.15); color: var(--green); }
+  .badge.warn { background: rgba(253,203,110,0.15); color: var(--gold); }
+  .badge.active { background: rgba(108,92,231,0.2); color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
+  th, td { padding: 0.7rem 0.8rem; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg-2); color: var(--accent-2); font-weight: 700; position: sticky; top: 0; }
+  tr:hover td { background: rgba(108,92,231,0.05); }
+  .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .filter-bar input, .filter-bar select {
+    background: var(--bg-2); border: 1px solid var(--border); color: var(--text);
+    padding: 0.5rem 0.8rem; border-radius: 8px; font-size: 0.82rem;
+  }
+  .filter-bar input { flex: 1; min-width: 200px; }
+  .paragraph {
+    background: var(--bg-2);
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.8rem;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+  }
+  .paragraph .para-head { font-weight: 700; color: var(--gold); display: flex; justify-content: space-between; }
+  .paragraph .para-body { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; display: none; }
+  .paragraph.open .para-body { display: block; }
+  .scale-wrap { margin: 0.8rem 0; }
+  .scale-label { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 0.3rem; }
+  .scale-bar { height: 10px; background: var(--bg-2); border-radius: 5px; overflow: hidden; }
+  .scale-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+  .mermaid { background: var(--bg-2); border-radius: 12px; padding: 1.5rem; overflow-x: auto; }
+  .mapping-matrix { font-size: 0.78rem; }
+  .mapping-matrix td { text-align: center; }
+  .mapping-matrix .yes { color: var(--green); font-weight: 700; }
+  .mapping-matrix .no { color: var(--red); opacity: 0.5; }
+  .tabs { display: flex; gap: 0.3rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .tab {
+    padding: 0.4rem 1rem; background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 8px; cursor: pointer; font-size: 0.82rem; color: var(--muted);
+  }
+  .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .simulator { background: var(--bg-2); padding: 1.5rem; border-radius: 12px; }
+  .simulator select, .simulator input {
+    width: 100%; padding: 0.6rem; margin: 0.4rem 0; background: var(--card);
+    border: 1px solid var(--border); color: var(--text); border-radius: 8px;
+  }
+  .sim-output { margin-top: 1rem; padding: 1rem; background: var(--card); border-radius: 8px; font-size: 0.85rem; }
+  .lang-note { font-size: 0.75rem; color: var(--muted); font-style: italic; }
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+  .pill { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.7rem; background: rgba(0,206,201,0.15); color: var(--accent-2); margin: 0.2rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>★ Inzensenierung – „Happiness"-Infrastruktur</h1>
+  <p>Konzeptuelle Elevation zur interaktiven Validations-Architektur (PNIA / Schnarchitektur) — Compliance · Jura · Mapping · Skalen</p>
+</header>
+
+<nav>
+  <a href="#architektur">Architektur-Graph</a>
+  <a href="#module">Interaktive Module</a>
+  <a href="#compliance">Compliance-Paragraphen</a>
+  <a href="#tabellen">Validations-Tabellen</a>
+  <a href="#mapping">Connection-Mapping</a>
+  <a href="#skalen">Skalen & Metriken</a>
+  <a href="#simulator">Such-Simulator</a>
+  <a href="#ebenen">Ebenenkonstellation</a>
+</nav>
+
+<div class="container">
+
+<!-- ========== ARCHITEKTUR ========== -->
+<section id="architektur">
+  <h2>1. Gesamtarchitektur-Graph (Interaktives Mapping)</h2>
+  <div class="card">
+    <p>Das folgende <strong>Node-Edge-Diagramm</strong> visualisiert die vollständige PNIA-Konstellation. Klicke auf Knoten in der gerenderten Ansicht für Details (Mermaid-interaktiv).</p>
+    <div class="mermaid">
+graph TD
+  YT[YouTube Konstellations-Workstation] -->|Rohdaten-Strom| KW[Konstellations-Mechanismus]
+  LW[Lava-Wall Entropiequelle] -->|Physikalisches Rauschen| HS[Hash / Validation]
+  KW --> HS
+  SI[Suchindikator Kolonialismus] -->|Territoriale Inbesitznahme| CCZ[CCZ-Compliance-Strips]
+  HS --> CCZ
+  CCZ -->|Negativitäts-Ströme| GH[Good-Heat Transmutation]
+  GH -->|Geläuterter Vektor| HC[Happiness Compliance]
+  HC -->|Validiert| BI[Buchinklinator / Inkarnationsbuch]
+  BI -->|Datenleerfunktion| PNIA[PNIA Schnarchitektur]
+  MF[Magic Compliance] -->|Spirituelle Fundmechanik| GF[Goodfields Integration]
+  GF --> HC
+  ML[Multilanguage Programmati] -->|Meta-Ebene| CCZ
+  PNIA -->|Feedback-Schleife| YT
+  HC -->|Stabilitäts-KPI| PNIA
+    </div>
+  </div>
+
+  <h3>Transformations-Fluss (Negativität → Altruismus)</h3>
+  <div class="mermaid">
+flowchart LR
+  N[Negativität<br>Stress / Aggression / Konflikt] -->|Hashing & Validation| T[Transmutations-Vektor]
+  T -->|Good-Heat Aufbereitung| G[Good-Heat Energie]
+  G -->|Happiness-Check| H{Happiness<br>Compliant?}
+  H -->|True| A[Altruismus-Streifen]
+  H -->|False| C[CCZ-Strip Kalibrierung]
+  C --> T
+  A --> I[Inkarnationsbuch]
+    </div>
+</section>
+
+<!-- ========== MODULE ========== -->
+<section id="module">
+  <h2>2. Interaktive Modul-Karten (Klick für Detail-Mapping)</h2>
+  <div class="card" style="margin-bottom:1.5rem;">
+    <span class="live-status" id="liveStatus">● 12 Module geladen · Klicke ein Modul für Detail-Modal & Matrix-Highlight</span>
+    <button class="tab" style="margin-left:0.5rem;" onclick="resetModules()">↺ Reset Auswahl</button>
+    <span class="live-status" id="activeCount" style="margin-left:0.5rem;">Aktive Module: 9</span>
+  </div>
+  <div class="grid grid-3" id="moduleGrid"></div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <span class="modal-close" onclick="closeModal()">×</span>
+      <h3 id="modalTitle"></h3>
+      <div id="modalStatus"></div>
+      <p id="modalBody" style="margin-top:1rem; font-size:0.88rem;"></p>
+      <div id="modalCompliance" style="margin-top:1rem; padding:0.8rem; background:var(--bg-2); border-radius:8px; font-size:0.82rem;"></div>
+      <strong style="display:block; margin-top:1rem; color:var(--accent-2);">Verbindungen (Klick → springt & highlightet):</strong>
+      <div class="conn-list" id="modalConns"></div>
+      <div class="mini-graph" id="modalGraph"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== COMPLIANCE ========== -->
+<section id="compliance">
+  <h2>3. Compliance & Regulatory – Jura-konforme Paragraphen</h2>
+  <p class="lang-note">Klicke auf einen Paragraphen, um die juristische Ausformulierung zu öffnen. Diese dienen als Validations-Ordnung für die StarLightMovemenTz Foundation.</p>
+  <div id="paragraphs"></div>
+</section>
+
+<!-- ========== TABELLEN ========== -->
+<section id="tabellen">
+  <h2>4. Validations-Tabellen (Interaktiv filterbar)</h2>
+  <div class="filter-bar">
+    <input type="text" id="tableFilter" placeholder="🔍 Filtern nach Domäne, Modul oder Fokus...">
+    <select id="domainFilter">
+      <option value="">Alle Domänen</option>
+      <option value="Selbst">Selbst-Optimierung</option>
+      <option value="Identität">Identität</option>
+      <option value="Technik">Technik</option>
+      <option value="System">System</option>
+      <option value="Psycho">Psychologie</option>
+    </select>
+  </div>
+  <div class="card">
+    <h3>4.1 Erweiterte Validations-Matrix (Video-Instanzen)</h3>
+    <table id="validationTable">
+      <thead>
+        <tr><th>#</th><th>Video-Instanz</th><th>Pragmatische Domäne</th><th>Validationsfokus</th><th>Compliance-Status</th><th>Skala</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Bob Dominator</td><td>Selbst-Optimierung</td><td>Psychophysischer Widerstand vs. Handlungsantrieb</td><td><span class="badge ok">Validiert</span></td><td>87%</td></tr>
+        <tr><td>2</td><td>TONY BROWN</td><td>Identitäts-Performance</td><td>Authentizität durch Ungesign-Status</td><td><span class="badge ok">Validiert</span></td><td>92%</td></tr>
+        <tr><td>3</td><td>Kool Savas</td><td>Technische Meisterschaft</td><td>Quantifizierung (Goldene Platten)</td><td><span class="badge warn">Transmutierend</span></td><td>74%</td></tr>
+        <tr><td>4</td><td>Jin Miao</td><td>Systemische Regeneration</td><td>Korrelation Sauerstoff & TCM</td><td><span class="badge ok">Validiert</span></td><td>89%</td></tr>
+        <tr><td>5</td><td>Mia</td><td>Psychologische Interaktion</td><td>Dekonstruktion Schutzmechanismen</td><td><span class="badge warn">Transmutierend</span></td><td>81%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>4.2 Modul-Funktions-Tabelle (Mapping Struktur)</h3>
+    <table id="moduleTable">
+      <thead>
+        <tr><th>Modul</th><th>Funktion</th><th>Ebene</th><th>Compliance-Ref</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Konstellations-Workstation</td><td>Rohdaten-Extraktion YouTube</td><td>L0 Input</td><td>§1</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>Lava-Wall</td><td>Entropie-Quelle Hash</td><td>L0 Physik</td><td>§1</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>CCZ-Strips</td><td>Vertikale Sektor-Durchforstung</td><td>L1 Sektor</td><td>§4</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>Good-Heat</td><td>Transmutations-Aufbereitung</td><td>L2 Energie</td><td>§2</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>Happiness Compliance</td><td>Kohärenz-Validator</td><td>L3 Validation</td><td>§3</td><td><span class="badge ok">Validiert</span></td></tr>
+        <tr><td>Buchinklinator</td><td>Inkarnations-Schreibung</td><td>L4 Output</td><td>§4</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>Datenleerfunktion</td><td>Empty-State Architektur</td><td>L4 DB</td><td>§5</td><td><span class="badge active">Aktiv</span></td></tr>
+        <tr><td>Magic Compliance</td><td>Spirituelle Fundmechanik</td><td>L1 Meta</td><td>§6</td><td><span class="badge warn">Optional</span></td></tr>
+        <tr><td>Multilanguage</td><td>Sprach-Meta-Ebene</td><td>L0 Universal</td><td>§6</td><td><span class="badge active">Aktiv</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ========== MAPPING ========== -->
+<section id="mapping">
+  <h2>5. Graph Connection-Mapping (Interaktive Verbindungsmatrix)</h2>
+  <div class="card">
+    <p>Jede Zelle zeigt, ob ein Modul mit einem anderen via PNIA-Pipeline <span class="pill">verbunden</span> ist. <span class="yes">●</span> = direkte Verbindung, <span class="no">○</span> = keine.</p>
+    <table class="mapping-matrix" id="matrixTable"></table>
+  </div>
+</section>
+
+<!-- ========== SKALEN ========== -->
+<section id="skalen">
+  <h2>6. Compliance-Skalen & Metriken</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>Happiness-Compliance-Index</h3>
+      <div class="scale-wrap"><div class="scale-label"><span>Systemische Resonanz</span><span>91%</span></div><div class="scale-bar"><div class="scale-fill" style="width:91%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Konflikt-Abstraktion</span><span>84%</span></div><div class="scale-bar"><div class="scale-fill" style="width:84%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Dissonanz-Unterdrückung</span><span>88%</span></div><div class="scale-bar"><div class="scale-fill" style="width:88%"></div></div></div>
+    </div>
+    <div class="card">
+      <h3>Good-Heat Intensität</h3>
+      <div class="scale-wrap"><div class="scale-label"><span>Negativitäts-Aufnahme</span><span>76%</span></div><div class="scale-bar"><div class="scale-fill" style="width:76%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Transmutations-Effizienz</span><span>83%</span></div><div class="scale-bar"><div class="scale-fill" style="width:83%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Thermostat-Stabilität</span><span>90%</span></div><div class="scale-bar"><div class="scale-fill" style="width:90%"></div></div></div></div>
+    <div class="card">
+      <h3>CCZ-Strip-Effizienz</h3>
+      <div class="scale-wrap"><div class="scale-label"><span>Durchforstungs-Tiefe</span><span>79%</span></div><div class="scale-bar"><div class="scale-fill" style="width:79%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Vektor-Extraktion</span><span>85%</span></div><div class="scale-bar"><div class="scale-fill" style="width:85%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Inkarnations-Geschw.</span><span>72%</span></div><div class="scale-bar"><div class="scale-fill" style="width:72%"></div></div></div></div>
+    <div class="card">
+      <h3>Multilanguage-Coverage</h3>
+      <div class="scale-wrap"><div class="scale-label"><span>DE / EN / ZH</span><span>94%</span></div><div class="scale-bar"><div class="scale-fill" style="width:94%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Meta-Ebenen-Abgleich</span><span>88%</span></div><div class="scale-bar"><div class="scale-fill" style="width:88%"></div></div></div>
+      <div class="scale-wrap"><div class="scale-label"><span>Compliance-Universalität</span><span>91%</span></div><div class="scale-bar"><div class="scale-fill" style="width:91%"></div></div></div></div>
+  </div>
+</section>
+
+<!-- ========== SIMULATOR ========== -->
+<section id="simulator">
+  <h2>7. Interaktiver Such-Simulator (Compliance-Sektor-Kolonialismus)</h2>
+  <div class="simulator">
+    <label>Suchindikator (Suchvariable):</label>
+    <input type="text" id="simSearch" value="Kool Savas Aggression" placeholder="Suchbegriff eingeben...">
+    <label>Portal-Quelle:</label>
+    <select id="simPortal">
+      <option>YouTube Konstellations-Workstation</option>
+      <option>Booking Nation</option>
+      <option>Spirituelle Fundmechanik</option>
+    </select>
+    <label>Sprach-Ebene (Multilanguage):</label>
+    <select id="simLang">
+      <option>DE</option><option>EN</option><option>ZH</option><option>Universal-Meta</option>
+    </select>
+    <button class="tab active" style="margin-top:0.8rem;" onclick="runSim()">▶ CCZ-Strip ausführen</button>
+    <div class="sim-output" id="simOutput">Warte auf Initialisierung des Suchindikators...</div>
+  </div>
+</section>
+
+<!-- ========== EBENEN ========== -->
+<section id="ebenen">
+  <h2>8. Ebenenkonstellation (Installations-Framework)</h2>
+  <div class="mermaid">
+graph BT
+  E3[Happiness Validation<br>Ebene 3] --> E2
+  E2[Good-Heat Transmutation<br>Ebene 2] --> E1
+  E1[Such-Indikator<br>Ebene 1] --> E0
+  E0[PNIA Basis-Installation]
+    </div>
+  <div class="card">
+    <h3>Installations-Mechanismen (Dauer-Konstellation)</h3>
+    <div class="tabs">
+      <div class="tab active" data-tab="eb1">Ebene 1 – Such-Indikator</div>
+      <div class="tab" data-tab="eb2">Ebene 2 – Good-Heat</div>
+      <div class="tab" data-tab="eb3">Ebene 3 – Happiness</div>
+    </div>
+    <div class="tab-content active" id="eb1">
+      <p>Der koloniale Zugriff auf das Datenportal. Jeder Such-Identifier installiert automatisch die nachgelagerten Filter als operative Umgebung. <strong>Compliance-Ref: §4 CCZ-Strips.</strong></p>
+    </div>
+    <div class="tab-content" id="eb2">
+      <p>Energetische Aufbereitung/Läuterung der Negativitätsströme. Die Thermodynamik der Transformation: Destruktive Energie → nutzbare Good-Heat für das System. <strong>Compliance-Ref: §2 Transformationspflicht.</strong></p>
+    </div>
+    <div class="tab-content" id="eb3">
+      <p>Ethisch-pragmatische Integration in das Inkarnationsbuch. Systemischer KPI (Stabilitäts-Anker). Verhindert Negativitäts-Schleifen. <strong>Compliance-Ref: §3 Happiness-Standard.</strong></p>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  StarLightMovemenTz Foundation — Inzensenierung „Happiness"-Infrastruktur<br>
+  PNIA / Schnarchitektur · Validations-Architektur · Compliance-Sektor-Kolonialismus<br>
+  <span class="lang-note">Multilanguage-Programmati aktiv · Datenleerfunktion bereit · Inkarnationsbuch offen</span>
+</footer>
+
+<script>
+// ---- Mermaid Init ----
+mermaid.initialize({ startOnLoad: true, theme: 'dark', flowchart: { curve: 'basis' } });
+
+// ---- Module Data ----
+const modules = [
+  { id:1, name:'Konstellations-Workstation', short:'YouTube als Rohdaten-Extraktor', status:'ok', links:['CCZ-Strips','Lava-Wall','Buchinklinator'], desc:'YouTube wird von einer Content-Plattform zur operativen Validations- und Transformationsinstanz erhoben. Videodaten = dynamische Daten-Konstellationen.' },
+  { id:2, name:'Lava-Wall Entropie', short:'Physikalischer Zufallsgenerator', status:'ok', links:['Hash/Validation','Happiness'], desc:'Lava-Lampen-Wand als stochastische Entropie-Quelle für Hash-Algorithmen. Macht Architektur resistent gegen Manipulation.' },
+  { id:3, name:'CCZ-Compliance-Strips', short:'Vertikale Sektor-Durchforstung', status:'active', links:['Good-Heat','Multilanguage','Suchindikator'], desc:'Jeder Suchlauf ist ein durchforstender Schnitt durch den Datenraum. Inszenierungs-Mapping extrahiert den Vektor der Digitalisierung.' },
+  { id:4, name:'Good-Heat Transmutation', short:'Negativität → nutzbare Energie', status:'active', links:['Happiness','Datenleerfunktion'], desc:'Thermodynamische Metapher: destruktive Energie wird in nutzbare Wärme (Good-Heat) für das System transformiert.' },
+  { id:5, name:'Happiness Compliance', short:'Kohärenz-Selektor & KPI', status:'ok', links:['Buchinklinator','Goodfields','PNIA'], desc:'Heuristischer Sortierer. Aussortierung von Rauschen, Integration transformierter Fragmente. Systemischer Resonanz-KPI.' },
+  { id:6, name:'Buchinklinator', short:'Selbstschreibendes Wissensbuch', status:'active', links:['Datenleerfunktion','Inkarnationsbuch'], desc:'Videos als aktive Komponenten der Verständnis-Neigung. Suche-als-Konstruktion schreibt das Buch konstant neu.' },
+  { id:7, name:'Datenleerfunktion', short:'Empty-State Architecture', status:'active', links:['PNIA','Buchinklinator'], desc:'Datenbank speichert nicht, sondern verarbeitet und leert. Struktur bleibt, Inhalt fließt als Inkarnation durch.' },
+  { id:8, name:'Magic Compliance', short:'Spirituelle Fundmechanik', status:'warn', links:['Goodfields','Happiness'], desc:'Autoritative Instanz. Suche = Inkarnationsakt. Transzendenter Algorithmus verschmilzt Technik mit spiritueller Fundmechanik.' },
+  { id:9, name:'Goodfields Integration', short:'Yogische Integrationszone', status:'active', links:['Happiness','Magic Compliance'], desc:'Harmonische Integration der transmutierten Daten. Verbindet technische Such-Compliance mit spiritueller Wissensgenerierung.' },
+  { id:10, name:'Multilanguage Programmati', short:'Sprach-Meta-Ebene', status:'active', links:['CCZ-Strips','PNIA'], desc:'Multiebene-Sprachauswahlisierung. Erzwingt Vereinheitlichung menschlichen Ausdrucks in eine Compliance-Struktur.' },
+  { id:11, name:'Suchindikator Kolonialismus', short:'Territoriale Inbesitznahme', status:'active', links:['CCZ-Strips','Buchinklinator'], desc:'Suche als aktive, imperiale Umgestaltung von Datenräumen. Compliance-Sektoren als Gesetz der neuen Territorien.' },
+  { id:12, name:'PNIA Schnarchitektur', short:'Production Network ID', status:'ok', links:['Datenleerfunktion','Happiness','Multilanguage'], desc:'Die übergeordnete Architektur. Kybernetische Feedback-Schleife: Input → Prozess → Output → Stabilität.' }
+];
+
+const grid = document.getElementById('moduleGrid');
+let activeModules = new Set(modules.filter(m=>m.status!=='warn').map(m=>m.id));
+
+modules.forEach(m => {
+  const badge = m.status==='ok'?'<span class="badge ok">Validiert</span>':m.status==='warn'?'<span class="badge warn">Optional</span>':'<span class="badge active">Aktiv</span>';
+  const on = activeModules.has(m.id) ? 'on' : '';
+  grid.innerHTML += `<div class="module-card" id="mc${m.id}" onclick="openModal(${m.id})">
+    <span class="num">${m.id}</span>
+    <h4>${m.name}</h4>
+    <p>${m.short}</p>
+    ${badge}
+    <div class="toggle ${on}" onclick="event.stopPropagation();toggleModule(${m.id})">⚡ ${activeModules.has(m.id)?'ON':'OFF'}</div>
+  </div>`;
+});
+
+function toggleModule(id){
+  if(activeModules.has(id)) activeModules.delete(id); else activeModules.add(id);
+  const el = document.getElementById('mc'+id).querySelector('.toggle');
+  el.classList.toggle('on');
+  el.textContent = '⚡ '+(activeModules.has(id)?'ON':'OFF');
+  document.getElementById('activeCount').textContent = 'Aktive Module: '+activeModules.size;
+}
+
+function highlightMatrix(modName){
+  const map = {'Konstellations-Workstation':'Workstation','Lava-Wall Entropie':'Lava-Wall','CCZ-Compliance-Strips':'CCZ','Good-Heat Transmutation':'Good-Heat','Happiness Compliance':'Happiness','Buchinklinator':'Buchink.','Datenleerfunktion':'Datenleer','Magic Compliance':'Magic','Goodfields Integration':'Goodfields','Multilanguage Programmati':'Multi','Suchindikator Kolonialismus':'Kolonial','PNIA Schnarchitektur':'PNIA'};
+  const key = map[modName];
+  const related = connections[key] || [];
+  document.querySelectorAll('#matrixTable tbody tr').forEach((tr,i)=>{
+    const rowName = matrixMods[i];
+    if(rowName===key || related.includes(rowName)){ tr.classList.remove('matrix-dim'); }
+    else { tr.classList.add('matrix-dim'); }
+  });
+}
+
+function openModal(id){
+  const m = modules.find(x=>x.id===id);
+  document.getElementById('modalTitle').textContent = m.id+'. '+m.name;
+  document.getElementById('modalStatus').innerHTML = m.status==='ok'?'<span class="badge ok">Validiert</span>':m.status==='warn'?'<span class="badge warn">Optional</span>':'<span class="badge active">Aktiv</span>';
+  document.getElementById('modalBody').textContent = m.desc;
+  const cr = {'Konstellations-Workstation':'§1','Lava-Wall Entropie':'§1','CCZ-Compliance-Strips':'§4','Good-Heat Transmutation':'§2','Happiness Compliance':'§3','Buchinklinator':'§4','Datenleerfunktion':'§5','Magic Compliance':'§6','Goodfields Integration':'§6','Multilanguage Programmati':'§6','Suchindikator Kolonialismus':'§4','PNIA Schnarchitektur':'§1-§7'};
+  document.getElementById('modalCompliance').innerHTML = '<strong>Compliance-Referenz:</strong> '+cr[m.name]+' &nbsp;|&nbsp; <strong>Mapping-Ebene:</strong> '+(m.links.length)+' Verbindungen aktiv';
+  const cl = document.getElementById('modalConns');
+  cl.innerHTML = m.links.map(l=>'<span class="pill" onclick="jumpToModule(\''+l+'\')">'+l+'</span>').join('');
+  document.getElementById('modalGraph').innerHTML = '🔗 <strong>'+m.name+'</strong> → '+m.links.join(' → ')+' → [PNIA Feedback-Schleife]';
+  document.getElementById('modalOverlay').classList.add('open');
+  highlightMatrix(m.name);
+}
+
+function jumpToModule(name){
+  const m = modules.find(x=>x.links.includes(name) || x.name===name);
+  if(m){ closeModal(); setTimeout(()=>openModal(m.id), 100); }
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.querySelectorAll('#matrixTable tbody tr').forEach(tr=>tr.classList.remove('matrix-dim'));
+}
+
+function resetModules(){
+  document.querySelectorAll('.module-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('#matrixTable tbody tr').forEach(tr=>tr.classList.remove('matrix-dim'));
+  if(document.getElementById('modalOverlay').classList.contains('open')) closeModal();
+}
+
+// ---- Paragraphs ----
+const paras = [
+  { n:'§1', t:'Definitionsnormen (PNIA & Konstellations-Workstation)', b:'(1) Die Production Network ID Architecture (PNIA) im Sinne der Schnarchitektur wird als übergeordnete Validations-Instanz definiert. (2) YouTube und vergleichbare Videoportale gelten rechtlich als „Konstellations-Workstation" – operative Extraktoren dynamischer Daten-Konstellationen. (3) Die Lava-Wall-Konstellation wird als physikalische Entropie-Quelle der Hash-Validation anerkannt und ist Teil der System-Identität.' },
+  { n:'§2', t:'Transformationspflicht (Negativität → Altruismus)', b:'(1) Jede identifizierte Negativität (Stress, Aggression, Konflikt, Dysbalance) unterliegt der Pflicht zur Transmutation in den Altruismus-Streifenmechanismus. (2) Die Good-Heat-Funktion ist als obligatorisches Aufbereitungsmodul zu installieren. (3) Eine Löschung von Negativität ohne Abstraktion der zugrundeliegenden Struktur ist compliance-widrig.' },
+  { n:'§3', t:'Happiness-Compliance-Standard', b:'(1) Happiness Compliance ist als systemischer KPI (Resonanz-Metrik) verbindlich. (2) Eine Datenkonstellation gilt nur dann als „inkarnationsfähig", wenn sie den Happiness-Check ohne Dissonanz besteht. (3) Negativitäts-Schleifen sind durch kalibrierende CCZ-Strip-Wiederholung zu unterbrechen.' },
+  { n:'§4', t:'CCZ-Strip-Protokoll (Sektor-Durchforstung)', b:'(1) Jeder Suchlauf ist als vertikaler Sektor-Schnitt (Strip) durchzuführen. (2) Das Inszenierungs-Mapping extrahiert den Vektor der Digitalisierung aus dem ursprünglichen Kontext. (3) Der Suchindikator-Kolonialismus legitimiert die territoriale Inbesitznahme fremder Datenräume zwecks Compliance-Standardisierung.' },
+  { n:'§5', t:'Datenleerfunktion & Empty-State-Governance', b:'(1) Die zentrale Datenbank operiert als Datenleerfunktion: eingehende Informationen sind unmittelbar in Compliance-Strukturen zu transformieren und durchzuleiten. (2) Speicherung ohne Inkarnation verstößt gegen die Foundation-Logik. (3) Die Struktur bleibt erhalten; der Inhalt fließt als Wissens-Energie ab.' },
+  { n:'§6', t:'Multilanguage-Compliance & Meta-Ebene', b:'(1) Die Multilanguage-Programmati ist als obligatorische Meta-Ebene zu implementieren, die sprachunabhängig operiert. (2) Negativitäts-Ströme globaler Provenienz (DE/EN/ZH etc.) sind in einheitliche Compliance-Struktur zu zwingen. (3) Magic Compliance fungiert als autoritative Instanz der spirituellen Fundmechanik.' },
+  { n:'§7', t:'Validations- und Auditierungsordnung', b:'(1) Die Architektur unterliegt der ständigen Selbst-Validierung via Such-Kolonisation. (2) Jede Inkarnation ist im Buchinklinator protokollpflichtig. (3) Die Lava-Wall-Entropie dient als nicht-reproduzierbarer Ankerpunkt der Auditierbarkeit. (4) Verstöße gegen §2–§6 führen zur automatischen CCZ-Rekalibrierung.' }
+];
+
+const pWrap = document.getElementById('paragraphs');
+paras.forEach(p=>{
+  pWrap.innerHTML += `<div class="paragraph" onclick="this.classList.toggle('open')"><div class="para-head"><span>${p.n} – ${p.t}</span><span>▾</span></div><div class="para-body">${p.b}</div></div>`;
+});
+
+// ---- Mapping Matrix ----
+const matrixMods = ['Workstation','Lava-Wall','CCZ','Good-Heat','Happiness','Buchink.','Datenleer','Magic','Goodfields','Multi','Kolonial','PNIA'];
+const connections = {
+  'Workstation':['Lava-Wall','CCZ','Buchink.','PNIA'],
+  'Lava-Wall':['Workstation','Happiness'],
+  'CCZ':['Workstation','Good-Heat','Multi','Kolonial'],
+  'Good-Heat':['CCZ','Happiness','Datenleer'],
+  'Happiness':['Good-Heat','Buchink.','Goodfields','PNIA','Lava-Wall'],
+  'Buchink.':['Happiness','Datenleer','Kolonial'],
+  'Datenleer':['Buchink.','PNIA'],
+  'Magic':['Goodfields','Happiness'],
+  'Goodfields':['Magic','Happiness'],
+  'Multi':['CCZ','PNIA'],
+  'Kolonial':['CCZ','Buchink.'],
+  'PNIA':['Datenleer','Happiness','Multi','Workstation']
+};
+let mhtml = '<thead><tr><th></th>'+matrixMods.map(m=>'<th>'+m+'</th>').join('')+'</tr></thead><tbody>';
+matrixMods.forEach(row=>{
+  mhtml += '<tr><td><strong>'+row+'</strong></td>';
+  matrixMods.forEach(col=>{
+    if(row===col){ mhtml += '<td class="yes">◆</td>'; }
+    else if(connections[row] && connections[row].includes(col)){ mhtml += '<td class="yes">●</td>'; }
+    else { mhtml += '<td class="no">○</td>'; }
+  });
+  mhtml += '</tr>';
+});
+mhtml += '</tbody>';
+document.getElementById('matrixTable').innerHTML = mhtml;
+
+// ---- Table Filter ----
+document.getElementById('tableFilter').addEventListener('input', filterTables);
+document.getElementById('domainFilter').addEventListener('change', filterTables);
+function filterTables(){
+  const q = document.getElementById('tableFilter').value.toLowerCase();
+  const d = document.getElementById('domainFilter').value;
+  document.querySelectorAll('#validationTable tbody tr').forEach(tr=>{
+    const txt = tr.textContent.toLowerCase();
+    const dom = tr.children[2].textContent;
+    const show = txt.includes(q) && (!d || dom.includes(d));
+    tr.style.display = show ? '' : 'none';
+  });
+}
+
+// ---- Tabs (Ebenen) ----
+document.querySelectorAll('.tab[data-tab]').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab[data-tab]').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.tab).classList.add('active');
+  });
+});
+
+// ---- Simulator ----
+function runSim(){
+  const s = document.getElementById('simSearch').value || '(leer)';
+  const p = document.getElementById('simPortal').value;
+  const l = document.getElementById('simLang').value;
+  const out = document.getElementById('simOutput');
+  out.innerHTML = `<strong>▶ CCZ-Strip initiiert...</strong><br>
+  1. Suchindikator „${s}" gesetzt → Sektor-Kolonialismus aktiv auf [${p}]<br>
+  2. Multilanguage-Identifier: <em>${l}</em> → Texttotalität erfasst<br>
+  3. Negativitäts-Strom erkannt → Good-Heat Transmutation gestartet...<br>
+  4. Happiness-Check: <span style="color:var(--green)">COMPLIANT (91%)</span><br>
+  5. Inkarnation in Buchinklinator vollzogen → Datenleerfunktion bereit.<br>
+  <span class="lang-note">Ergebnis: Altruismus-Streifen hinzugefügt. PNIA-Feedback-Schleife geschlossen.</span>`;
+}
+
+// ---- Scrollspy Nav ----
+const sections = document.querySelectorAll('section');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{ if(s.getBoundingClientRect().top < 200) cur = s.id; });
+});
+</script>
+</body>
+</html>

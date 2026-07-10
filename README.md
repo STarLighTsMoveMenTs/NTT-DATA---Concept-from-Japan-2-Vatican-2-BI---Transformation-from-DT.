@@ -1,4 +1,4 @@
-# NTT-DATA — Concept from Japan 2 Vatican 2 BI — Transformation from DT
+ich # NTT-DATA — Concept from Japan 2 Vatican 2 BI — Transformation from DT
 
 **Projekt:** Inzensenierung – „Happiness"-Infrastruktur (PNIA / Schnarchitektur)
 **Repo:** STarLighTsMoveMenTs / NTT-DATA---Concept-from-Japan-2-Vatican-2-BI---Transformation-from-DT
@@ -99,6 +99,97 @@ graph LR
   HC --> GF --> MC
   PNIA -->|Feedback| CCZ
 ```
+
+---
+
+## 🧩 Interaktive Module (Detail-Mapping)
+
+Die `index.html` rendert 12 klickbare Modulkarten. Klick öffnet ein **Modal** mit Beschreibung, Compliance-Referenz, Mapping-Ebene und Mini-Graph; der **ON/OFF-Toggle** steuert den Live-Status; beim Öffnen wird die **Connection-Matrix** (Sektion unten) automatisch gefiltert (Cross-Highlight).
+
+| # | Modul | Funktion | Ebene | Compliance-Ref | Status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Konstellations-Workstation | YouTube als Rohdaten-Extraktor | L0 Input | §1 | Validiert |
+| 2 | Lava-Wall Entropie | Physikalischer Zufallsgenerator | L0 Physik | §1 | Validiert |
+| 3 | CCZ-Compliance-Strips | Vertikale Sektor-Durchforstung | L1 Sektor | §4 | Aktiv |
+| 4 | Good-Heat Transmutation | Negativität → nutzbare Energie | L2 Energie | §2 | Aktiv |
+| 5 | Happiness Compliance | Kohärenz-Selektor & KPI | L3 Validation | §3 | Validiert |
+| 6 | Buchinklinator | Selbstschreibendes Wissensbuch | L4 Output | §4 | Aktiv |
+| 7 | Datenleerfunktion | Empty-State Architecture | L4 DB | §5 | Aktiv |
+| 8 | Magic Compliance | Spirituelle Fundmechanik | L1 Meta | §6 | Optional |
+| 9 | Goodfields Integration | Yogische Integrationszone | L3 Harmonie | §6 | Aktiv |
+| 10 | Multilanguage Programmati | Sprach-Meta-Ebene | L0 Universal | §6 | Aktiv |
+| 11 | Suchindikator Kolonialismus | Territoriale Inbesitznahme | L1 Sektor | §4 | Aktiv |
+| 12 | PNIA Schnarchitektur | Production Network ID | L0–L4 | §1–§7 | Validiert |
+
+---
+
+## ⚖️ Compliance & Jura-konforme Paragraphen (§1–§7)
+
+Diese Paragraphen bilden die **Validations-Ordnung** der StarLightMovemenTz Foundation (in `index.html` aufklappbar):
+
+- **§1 Definitionsnormen** — PNIA als übergeordnete Validations-Instanz; YouTube = Konstellations-Workstation; Lava-Wall = physikalische Entropie-Quelle der Hash-Validation.
+- **§2 Transformationspflicht** — Jede Negativität unterliegt der Transmutation in den Altruismus-Streifen; Good-Heat als obligatorisches Modul; Löschung ohne Abstraktion = compliance-widrig.
+- **§3 Happiness-Compliance-Standard** — Happiness als systemischer KPI verbindlich; inkarnationsfähig nur bei bestandenem Happiness-Check; Negativitäts-Schleifen via CCZ-Rekalibrierung unterbrechen.
+- **§4 CCZ-Strip-Protokoll** — Jeder Suchlauf = vertikaler Sektor-Schnitt; Inszenierungs-Mapping extrahiert den Vektor der Digitalisierung; Suchindikator-Kolonialismus legitimiert territoriale Inbesitznahme.
+- **§5 Datenleerfunktion** — Datenbank operiert als Empty-State: sofortige Transformation + Durchleitung; Speicherung ohne Inkarnation verstößt gegen Foundation-Logik.
+- **§6 Multilanguage-Compliance** — Obligatorische sprachunabhängige Meta-Ebene; globaler Negativitäts-Strom in einheitliche Compliance-Struktur; Magic Compliance als autoritative Instanz.
+- **§7 Validations- und Auditierungsordnung** — Ständige Selbst-Validierung via Such-Kolonisation; Inkarnation protokollpflichtig im Buchinklinator; Lava-Wall als nicht-reproduzierbarer Audit-Anker.
+
+---
+
+## 📊 Validations-Tabellen (Interaktiv filterbar in index.html)
+
+### Erweiterte Validations-Matrix (Video-Instanzen)
+| # | Video-Instanz | Domäne | Validationsfokus | Status | Skala |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Bob Dominator | Selbst-Optimierung | Psychophysischer Widerstand vs. Handlungsantrieb | Validiert | 87% |
+| 2 | TONY BROWN | Identitäts-Performance | Authentizität durch Ungesign-Status | Validiert | 92% |
+| 3 | Kool Savas | Technische Meisterschaft | Quantifizierung (Goldene Platten) | Transmutierend | 74% |
+| 4 | Jin Miao | Systemische Regeneration | Korrelation Sauerstoff & TCM | Validiert | 89% |
+| 5 | Mia | Psychologische Interaktion | Dekonstruktion Schutzmechanismen | Transmutierend | 81% |
+
+---
+
+## 🔗 Graph Connection-Mapping (Verbindungsmatrix)
+
+Die 12×12-Matrix in `index.html` zeigt direkte Graph-Connections (`●`) zwischen Modulen. Zusammenfassung der Primärkanten:
+
+| Modul | Direkte Verbindungen |
+| --- | --- |
+| Workstation | Lava-Wall, CCZ, Buchinklinator, PNIA |
+| Lava-Wall | Workstation, Happiness |
+| CCZ-Strips | Workstation, Good-Heat, Multilanguage, Kolonial |
+| Good-Heat | CCZ, Happiness, Datenleerfunktion |
+| Happiness | Good-Heat, Buchinklinator, Goodfields, PNIA, Lava-Wall |
+| Buchinklinator | Happiness, Datenleerfunktion, Kolonial |
+| Datenleerfunktion | Buchinklinator, PNIA |
+| Magic Compliance | Goodfields, Happiness |
+| Goodfields | Magic, Happiness |
+| Multilanguage | CCZ, PNIA |
+| Kolonial | CCZ, Buchinklinator |
+| PNIA | Datenleerfunktion, Happiness, Multilanguage, Workstation |
+
+---
+
+## 📈 Compliance-Skalen & Metriken
+
+| Metrik-Gruppe | Kennwerte |
+| --- | --- |
+| Happiness-Compliance-Index | Systemische Resonanz 91% · Konflikt-Abstraktion 84% · Dissonanz-Unterdrückung 88% |
+| Good-Heat Intensität | Negativitäts-Aufnahme 76% · Transmutations-Effizienz 83% · Thermostat-Stabilität 90% |
+| CCZ-Strip-Effizienz | Durchforstungs-Tiefe 79% · Vektor-Extraktion 85% · Inkarnations-Geschw. 72% |
+| Multilanguage-Coverage | DE/EN/ZH 94% · Meta-Ebenen-Abgleich 88% · Universalität 91% |
+
+---
+
+## 🎛️ Interaktiver Such-Simulator (Compliance-Sektor-Kolonialismus)
+
+In `index.html` (Sektion 7) simuliert ein Formular den CCZ-Strip-Durchlauf:
+1. **Suchindikator** (Suchvariable) → Sektor-Kolonialismus aktiv auf gewähltem Portal
+2. **Multilanguage-Identifier** → Texttotalität erfasst
+3. **Good-Heat Transmutation** → Negativitäts-Strom erkannt
+4. **Happiness-Check** → COMPLIANT (91%)
+5. **Inkarnation** in Buchinklinator → Datenleerfunktion bereit
 
 ---
 

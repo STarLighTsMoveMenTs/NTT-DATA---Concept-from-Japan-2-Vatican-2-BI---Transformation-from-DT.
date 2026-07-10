@@ -28,6 +28,80 @@ Konstellations-Workstation · Lava-Wall-Entropie · CCZ-Compliance-Strips · Goo
 
 ---
 
+## 🌐 Visuelle Architektur-Darstellung (Mermaid)
+
+> Die folgenden Diagramme rendern direkt auf GitHub (Mermaid-Support). Sie spiegeln die interaktive `index.html`-Plattform wider.
+
+### Gesamtarchitektur-Graph (PNIA-Konstellation)
+```mermaid
+graph TD
+  YT[YouTube Konstellations-Workstation] -->|Rohdaten-Strom| KW[Konstellations-Mechanismus]
+  LW[Lava-Wall Entropiequelle] -->|Physikalisches Rauschen| HS[Hash / Validation]
+  KW --> HS
+  SI[Suchindikator Kolonialismus] -->|Territoriale Inbesitznahme| CCZ[CCZ-Compliance-Strips]
+  HS --> CCZ
+  CCZ -->|Negativitäts-Ströme| GH[Good-Heat Transmutation]
+  GH -->|Geläuterter Vektor| HC[Happiness Compliance]
+  HC -->|Validiert| BI[Buchinklinator / Inkarnationsbuch]
+  BI -->|Datenleerfunktion| PNIA[PNIA Schnarchitektur]
+  MF[Magic Compliance] -->|Spirituelle Fundmechanik| GF[Goodfields Integration]
+  GF --> HC
+  ML[Multilanguage Programmati] -->|Meta-Ebene| CCZ
+  PNIA -->|Feedback-Schleife| YT
+  HC -->|Stabilitäts-KPI| PNIA
+```
+
+### Transformations-Fluss (Negativität → Altruismus)
+```mermaid
+flowchart LR
+  N[Negativität<br>Stress / Aggression / Konflikt] -->|Hashing & Validation| T[Transmutations-Vektor]
+  T -->|Good-Heat Aufbereitung| G[Good-Heat Energie]
+  G -->|Happiness-Check| H{Happiness<br>Compliant?}
+  H -->|True| A[Altruismus-Streifen]
+  H -->|False| C[CCZ-Strip Kalibrierung]
+  C --> T
+  A --> I[Inkarnationsbuch]
+```
+
+### Ebenenkonstellation (Installations-Framework der 3 Ebenen)
+```mermaid
+graph BT
+  E3[Happiness Validation<br>Ebene 3 - KPI / Stabilität] --> E2
+  E2[Good-Heat Transmutation<br>Ebene 2 - Energie-Aufbereitung] --> E1
+  E1[Such-Indikator<br>Ebene 1 - Kolonialer Zugriff] --> E0
+  E0[PNIA Basis-Installation<br>Empty-State Architecture]
+```
+
+### Connection-Mapping (Modul-Verbindungsmatrix)
+```mermaid
+graph LR
+  subgraph L1[Ebene 1 - Sektor]
+    CCZ[CCZ-Strips]
+    SI[Suchindikator]
+    ML[Multilanguage]
+  end
+  subgraph L2[Ebene 2 - Energie]
+    GH[Good-Heat]
+  end
+  subgraph L3[Ebene 3 - Validation]
+    HC[Happiness Compliance]
+    GF[Goodfields]
+    MC[Magic Compliance]
+  end
+  subgraph L4[Ebene 4 - Output]
+    BI[Buchinklinator]
+    DL[Datenleerfunktion]
+    PNIA[PNIA]
+  end
+  CCZ --> GH --> HC --> BI --> DL --> PNIA
+  SI --> CCZ
+  ML --> CCZ
+  HC --> GF --> MC
+  PNIA -->|Feedback| CCZ
+```
+
+---
+
 ## 📜 Konzept-Grundlage (Inzensenierung – „Happiness"-Infrastruktur)
 
 Die folgende Systematik verstehe ich als einen methodischen Ansatz, um **Beschreibungskonsultativität** als eine **Validationsfunktionalitätsebene** innerhalb der Pragmatik zu etablieren. Die Analyse der genannten Video-Instanzen ist dabei nicht bloße Inhaltswiedergabe, sondern Prozess der **datenstrukturellen Verifizierung** innerhalb von Konsultationsmechanismen.
